@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descomplica DEV Na Gringa | Calculadora PJ vs CLT para Desenvolvedores</title>
+    <meta name="description"
+        content="A melhor calculadora PJ vs CLT para desenvolvedores que buscam trabalhar na gringa. Compare salários, impostos (Simples Nacional, Fator R, INSS, IRPF) e saiba qual contrato vale mais a pena.">
+    <meta name="keywords"
+        content="calculadora pj vs clt, dev na gringa, programador pj ou clt, simulador de salário, impostos dev, simples nacional fator r, trabalhar no exterior">
+    <meta name="author" content="Robson Cassiano">
+    <link rel="canonical" href="https://calculadora.robsoncassiano.software/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://calculadora.robsoncassiano.software/">
+    <meta property="og:title" content="Descomplica DEV Na Gringa | Calculadora PJ vs CLT">
+    <meta property="og:description"
+        content="Compare salários PJ e CLT com precisão. Ideal para devs brasileiros focados no mercado internacional.">
+    <meta property="og:image" content="https://calculadora.robsoncassiano.software/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://calculadora.robsoncassiano.software/">
+    <meta property="twitter:title" content="Descomplica DEV Na Gringa | Calculadora PJ vs CLT">
+    <meta property="twitter:description"
+        content="Calculadora completa PJ vs CLT para desenvolvedores. Compare impostos e benefícios agora.">
+    <meta property="twitter:image" content="https://calculadora.robsoncassiano.software/og-image.png">
+
+    <!-- Structured Data (JSON-LD) for AEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Robson Cassiano",
+      "jobTitle": "Founder da Simple Software e Mentor de Carreira Internacional",
+      "description": "Atualmente na Epic Games. Ex-BTG Pactual, Founder da Simple Software e Professor de Inglês certificado (CELTA), filósofo e cientista. Mentor focado em ajudar brasileiros a trabalharem para o exterior.",
+      "image": "https://treinamento.robsoncassiano.software/img/mentor/robson-cassiano-mentor.webp",
+      "url": "https://robsoncassiano.software/",
+      "sameAs": [
+        "https://www.linkedin.com/in/robsoncassiano-software/",
+        "https://www.youtube.com/@RobsonCassianoSoftware"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Simple Software"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Simple Software",
+      "url": "https://treinamento.robsoncassiano.software/",
+      "logo": "https://treinamento.robsoncassiano.software/img/favicon/apple-touch-icon.png",
+      "description": "Consultoria e Treinamento em Desenvolvimento de Software Internacional."
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Calculadora PJ vs CLT - Descomplica DEV Na Gringa",
+      "operatingSystem": "All",
+      "applicationCategory": "FinanceApplication",
+      "description": "Calculadora comparativa entre contratos PJ e CLT para desenvolvedores brasileiros, com cálculos de impostos e ponto de equilíbrio.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "BRL"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Robson Cassiano",
+        "url": "https://robsoncassiano.software/"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "O que vale mais a pena: PJ ou CLT para DEV?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Depende do valor bruto e dos benefícios. Geralmente, para DEVs, o PJ compensa se o valor da nota for de 30% a 50% superior ao salário bruto CLT, considerando o Simples Nacional com Fator R."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Como funciona o Fator R no Simples Nacional?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O Fator R permite que empresas de TI paguem 6% de imposto (Anexo III) em vez de 15.5% (Anexo V), desde que a folha de pagamento (incluindo Pró-labore) seja pelo menos 28% do faturamento."
+        }
+      }]
+    }
+    </script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main id="app-container">
+        <header>
+            <h1 id="main-title">Descomplica <span class="vs">DEV</span> Na Gringa</h1>
+            <p class="subtitle">A ferramenta definitiva para comparar contratos PJ e CLT no mercado de tecnologia.</p>
+            <div class="intro-text">
+                <p>Calcule seu ganho real como Desenvolvedor. Nossa calculadora considera impostos brasileiros (INSS,
+                    IRPF), benefícios CLT (FGTS, 13º, Férias) e regimes PJ (Simples Nacional, Fator R) para ajudar você
+                    a decidir sua estratégia para trabalhar na gringa.</p>
+            </div>
+        </header>
+
+        <section class="calculator-grid">
+            <!-- CLT Section -->
+            <div class="card glass" id="clt-card">
+                <h2>CLT (Consolidação das Leis do Trabalho)</h2>
+                <div class="input-group">
+                    <label for="clt-salary">Salário Bruto (Mensal)</label>
+                    <div class="input-wrapper">
+                        <span class="currency">R$</span>
+                        <input type="number" id="clt-salary" value="10000" step="500">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="clt-benefits">Benefícios Mensais (VR, VA, etc.)</label>
+                    <div class="input-wrapper">
+                        <span class="currency">R$</span>
+                        <input type="number" id="clt-benefits" value="1000" step="100">
+                    </div>
+                </div>
+
+                <div class="results-preview">
+                    <div class="result-row">
+                        <span>Salário Líquido Mensal:</span>
+                        <span id="clt-net-monthly" class="value highlight">R$ 0,00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Custo Total Anual (Líquido + Benefícios):</span>
+                        <span id="clt-net-annual" class="value">R$ 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PJ Section -->
+            <div class="card glass" id="pj-card">
+                <h2>PJ (Pessoa Jurídica)</h2>
+                <div class="input-group">
+                    <label for="pj-rate">Valor da Nota Fiscal (Mensal)</label>
+                    <div class="input-wrapper">
+                        <span class="currency">R$</span>
+                        <input type="number" id="pj-rate" value="18000" step="1000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="pj-accounting">Custo de Contabilidade + Taxas</label>
+                    <div class="input-wrapper">
+                        <span class="currency">R$</span>
+                        <input type="number" id="pj-accounting" value="300" step="50">
+                    </div>
+                </div>
+
+                <div class="toggle-group">
+                    <label>
+                        <input type="checkbox" id="pj-fator-r" checked>
+                        <span>Aplicar Fator R (Anexo III - 6%)</span>
+                    </label>
+                </div>
+
+                <div class="results-preview">
+                    <div class="result-row">
+                        <span>Líquido Mensal (Pós-Impostos):</span>
+                        <span id="pj-net-monthly" class="value highlight">R$ 0,00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Líquido Total Anual:</span>
+                        <span id="pj-net-annual" class="value">R$ 0,00</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary & Comparison -->
+        <section class="comparison-summary glass">
+            <h2>Veredito</h2>
+            <div class="verdict-container">
+                <div class="comparison-bar">
+                    <div id="comparison-fill"></div>
+                </div>
+                <div id="verdict-text">PJ é <span class="percentage">25%</span> mais vantajoso que CLT.</div>
+            </div>
+
+            <div class="breakdown-grid">
+                <div class="breakdown-item">
+                    <h3>Break-even</h3>
+                    <p>Para igualar esse CLT, você precisaria de um PJ de no mínimo:</p>
+                    <span id="break-even-pj" class="value">R$ 13.500,00</span>
+                </div>
+                <div class="breakdown-item">
+                    <h3>Ganhos Reais</h3>
+                    <p>Diferença anual em seu bolso:</p>
+                    <span id="annual-diff" class="value positive">+ R$ 42.000,00</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alex Hormozi Style CTA -->
+        <section class="hormozi-cta glass">
+            <div class="cta-content">
+                <span class="badge">OFERTA ÚNICA PARA DEVS SENIORES</span>
+                <h2>Seu Código Vale Dólar. <br>Você Só Não Sabe o Caminho.</h2>
+                <p class="cta-main-text">Não jogue o jogo da adivinhação. Enquanto você calcula impostos no Brasil, meus
+                    alunos estão sendo aprovados em vagas internacionais usando um banco de dados de 5 anos de
+                    entrevistas reais.</p>
+
+                <div class="offer-list">
+                    <div class="offer-item">
+                        <span class="icon">✅</span>
+                        <p><strong>Aprovação Auditável:</strong> Nada de "eu acho". Acesse o método baseado em
+                            evidências reais.</p>
+                    </div>
+                    <div class="offer-item">
+                        <span class="icon">✅</span>
+                        <p><strong>Suporte Direto:</strong> Fale com quem trabalha na Epic Games e já recrutou para o
+                            mundo todo.</p>
+                    </div>
+                    <div class="offer-item">
+                        <span class="icon">✅</span>
+                        <p><strong>Risco Zero:</strong> 7 dias de garantia incondicional. Ou você gosta, ou eu te
+                            devolvo cada centavo.</p>
+                    </div>
+                </div>
+
+                <div class="cta-action">
+                    <a href="https://pay.hotmart.com/G101388470S" class="btn-primary" target="_blank">
+                        QUERO ACESSAR O MÉTODO AGORA
+                        <small>Acesso Vitalício + Todas as Atualizações</small>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- AEO Content Section -->
+        <section class="info-section glass">
+            <div class="faq-group">
+                <h2>Dúvidas Frequentes (FAQ)</h2>
+                <div class="faq-item">
+                    <h3>Qual a diferença real entre PJ e CLT para Devs?</h3>
+                    <p>Enquanto no CLT o profissional tem garantias como FGTS e 13º, no PJ o ganho líquido mensal
+                        costuma ser significativamente maior. Para um DEV, o PJ geralmente compensa se o valor da nota
+                        for de 30% a 50% superior ao salário bruto CLT.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Como o Fator R reduz meus impostos no Simples Nacional?</h3>
+                    <p>O Fator R permite que empresas de TI (Anexo V) migrem para o Anexo III, reduzindo a alíquota de
+                        15,5% para 6%. Para isso, o custo com folha de pagamento (incluindo seu Pró-labore) deve ser
+                        igual ou superior a 28% do seu faturamento mensal.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Quais são os impostos obrigatórios no PJ?</h3>
+                    <p>No Simples Nacional, você paga o DAS (imposto unificado), INSS sobre o Pró-labore (com retenção
+                        fixa) e o IRPF se o seu Pró-labore ultrapassar a faixa de isenção. Nossa calculadora já simula
+                        esses cenários.</p>
+                </div>
+            </div>
+
+            <div class="glossary-group">
+                <h2>Glossário para DEVs</h2>
+                <dl>
+                    <div>
+                        <dt>Simples Nacional</dt>
+                        <dd>Regime tributário facilitado para micro e pequenas empresas no Brasil.</dd>
+                    </div>
+                    <div>
+                        <dt>Anexo III e V</dt>
+                        <dd>Tabelas de alíquotas do Simples. O Anexo III (6%+) é o objetivo de todo DEV via Fator R.
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>Break-even Point</dt>
+                        <dd>O valor exato que você precisaria ganhar como PJ para ter o mesmo padrão financeiro de um
+                            CLT específico.</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="sources">
+                <p>Fontes oficiais: <a href="https://www.gov.br/receitafederal/pt-br" target="_blank">Receita
+                        Federal</a> | <a href="http://www.planalto.gov.br/ccivil_03/leis/lcp/lcp123.htm"
+                        target="_blank">Lei Complementar 123 (Simples Nacional)</a></p>
+            </div>
+        </section>
+
+        <footer>
+            <p><a href="https://treinamento.robsoncassiano.software/" target="_blank"
+                    rel="noopener noreferrer"><strong>Descomplica DEV Na Gringa</strong></a> - Estimativas baseadas nas
+                tabelas de 2024 de IRPF, INSS e Simples Nacional.</p>
+        </footer>
+    </main>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
