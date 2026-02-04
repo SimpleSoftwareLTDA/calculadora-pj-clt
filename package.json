@@ -1,0 +1,11 @@
+{
+  "name": "calculadora-pj-clt",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Calculadora PJ vs CLT para desenvolvedores brasileiros.",
+  "scripts": {
+    "dev": "bunx serve .",
+    "build": "echo \"No build step\"",
+    "deploy": "wrangler pages deploy ."
+  }
+}
