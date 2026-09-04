@@ -37,62 +37,67 @@ const appState = {
     selicRate: 14.00  // Fallback Selic
 };
 
-// Mapeamento dos elementos do DOM
-const dom = {
-    // API Status
-    statusDot: document.getElementById('status-dot'),
-    statusText: document.getElementById('api-status-text'),
-    tagPtax: document.getElementById('tag-ptax'),
-    tagSalarioMinimo: document.getElementById('tag-salario-minimo'),
-    tagIpca: document.getElementById('tag-ipca'),
+// Mapeamento dinâmico e seguro dos elementos do DOM
+let dom = {};
 
-    // Moeda & Alternadores
-    btnCurrBrl: document.getElementById('btn-curr-brl'),
-    btnCurrUsd: document.getElementById('btn-curr-usd'),
-    currencySymbol: document.getElementById('pj-currency-symbol'),
-    labelPjRate: document.getElementById('label-pj-rate'),
-    intlFieldsGrid: document.getElementById('intl-fields-grid'),
-    conversionPreview: document.getElementById('conversion-preview'),
-    pjConvertedBrl: document.getElementById('pj-converted-brl'),
+function initDom() {
+    const get = (id) => document.getElementById(id);
+    dom = {
+        // API Status
+        statusDot: get('status-dot'),
+        statusText: get('api-status-text'),
+        tagPtax: get('tag-ptax'),
+        tagSalarioMinimo: get('tag-salario-minimo'),
+        tagIpca: get('tag-ipca'),
 
-    // Entradas CLT
-    cltSalary: document.getElementById('clt-salary'),
-    cltBenefits: document.getElementById('clt-benefits'),
+        // Moeda & Alternadores
+        btnCurrBrl: get('btn-curr-brl'),
+        btnCurrUsd: get('btn-curr-usd'),
+        currencySymbol: get('pj-currency-symbol'),
+        labelPjRate: get('label-pj-rate'),
+        intlFieldsGrid: get('intl-fields-grid'),
+        conversionPreview: get('conversion-preview'),
+        pjConvertedBrl: get('pj-converted-brl'),
 
-    // Entradas PJ
-    pjRate: document.getElementById('pj-rate'),
-    pjExchangeRate: document.getElementById('pj-exchange-rate'),
-    pjSpread: document.getElementById('pj-spread'),
-    pjAccounting: document.getElementById('pj-accounting'),
-    pjExport: document.getElementById('pj-export'),
-    pjFatorR: document.getElementById('pj-fator-r'),
-    labelFatorR: document.getElementById('label-fator-r'),
+        // Entradas CLT
+        cltSalary: get('clt-salary'),
+        cltBenefits: get('clt-benefits'),
 
-    // Saídas CLT
-    cltNetMonthly: document.getElementById('clt-net-monthly'),
-    cltNetAnnual: document.getElementById('clt-net-annual'),
-    cltTaxInss: document.getElementById('clt-tax-inss'),
-    cltTaxIrpf: document.getElementById('clt-tax-irpf'),
-    cltTotalFgts: document.getElementById('clt-total-fgts'),
+        // Entradas PJ
+        pjRate: get('pj-rate'),
+        pjExchangeRate: get('pj-exchange-rate'),
+        pjSpread: get('pj-spread'),
+        pjAccounting: get('pj-accounting'),
+        pjExport: get('pj-export'),
+        pjFatorR: get('pj-fator-r'),
+        labelFatorR: get('label-fator-r'),
 
-    // Saídas PJ
-    pjNetMonthly: document.getElementById('pj-net-monthly'),
-    pjNetMonthlyUsdRow: document.getElementById('pj-net-monthly-usd-row'),
-    pjNetMonthlyUsd: document.getElementById('pj-net-monthly-usd'),
-    pjNetAnnual: document.getElementById('pj-net-annual'),
-    pjTaxDas: document.getElementById('pj-tax-das'),
-    pjTaxInss: document.getElementById('pj-tax-inss'),
-    pjTaxIrpf: document.getElementById('pj-tax-irpf'),
-    pjSpreadLine: document.getElementById('pj-spread-line'),
-    pjCostSpread: document.getElementById('pj-cost-spread'),
+        // Saídas CLT
+        cltNetMonthly: get('clt-net-monthly'),
+        cltNetAnnual: get('clt-net-annual'),
+        cltTaxInss: get('clt-tax-inss'),
+        cltTaxIrpf: get('clt-tax-irpf'),
+        cltTotalFgts: get('clt-total-fgts'),
 
-    // Comparativo & Veredito
-    comparisonFill: document.getElementById('comparison-fill'),
-    verdictText: document.getElementById('verdict-text'),
-    breakEvenPj: document.getElementById('break-even-pj'),
-    breakEvenPjUsd: document.getElementById('break-even-pj-usd'),
-    annualDiff: document.getElementById('annual-diff')
-};
+        // Saídas PJ
+        pjNetMonthly: get('pj-net-monthly'),
+        pjNetMonthlyUsdRow: get('pj-net-monthly-usd-row'),
+        pjNetMonthlyUsd: get('pj-net-monthly-usd'),
+        pjNetAnnual: get('pj-net-annual'),
+        pjTaxDas: get('pj-tax-das'),
+        pjTaxInss: get('pj-tax-inss'),
+        pjTaxIrpf: get('pj-tax-irpf'),
+        pjSpreadLine: get('pj-spread-line'),
+        pjCostSpread: get('pj-cost-spread'),
+
+        // Comparativo & Veredito
+        comparisonFill: get('comparison-fill'),
+        verdictText: get('verdict-text'),
+        breakEvenPj: get('break-even-pj'),
+        breakEvenPjUsd: get('break-even-pj-usd'),
+        annualDiff: get('annual-diff')
+    };
+}
 
 // Funções de Formatação
 function formatBRL(value) {
@@ -237,21 +242,27 @@ function calculateBreakEven(targetAnnualCLT, currency, exchangeRate, spreadPerce
 
 // Atualização da Interface
 function updateUI() {
-    const cltVal = parseFloat(dom.cltSalary.value) || 0;
-    const cltBen = parseFloat(dom.cltBenefits.value) || 0;
-    const pjInputVal = parseFloat(dom.pjRate.value) || 0;
-    const exchangeRate = parseFloat(dom.pjExchangeRate.value) || appState.ptaxRate;
-    const spreadVal = parseFloat(dom.pjSpread.value) || 0;
-    const pjAcc = parseFloat(dom.pjAccounting.value) || 0;
-    const isExport = dom.pjExport.checked;
-    const useFatorR = dom.pjFatorR.checked;
+    if (!dom.cltSalary) {
+        initDom();
+    }
+
+    const cltVal = dom.cltSalary ? (parseFloat(dom.cltSalary.value) || 0) : 10000;
+    const cltBen = dom.cltBenefits ? (parseFloat(dom.cltBenefits.value) || 0) : 1000;
+    const pjInputVal = dom.pjRate ? (parseFloat(dom.pjRate.value) || 0) : 18000;
+    const exchangeRate = dom.pjExchangeRate ? (parseFloat(dom.pjExchangeRate.value) || appState.ptaxRate) : appState.ptaxRate;
+    const spreadVal = dom.pjSpread ? (parseFloat(dom.pjSpread.value) || 0) : 1.0;
+    const pjAcc = dom.pjAccounting ? (parseFloat(dom.pjAccounting.value) || 0) : 300;
+    const isExport = dom.pjExport ? dom.pjExport.checked : true;
+    const useFatorR = dom.pjFatorR ? dom.pjFatorR.checked : true;
     const currency = appState.selectedCurrency;
 
     // Atualiza label do Fator R conforme status de exportação
-    if (isExport) {
-        dom.labelFatorR.textContent = 'Aplicar Fator R (Anexo III - ~3,05% exportação / 9,30% sem Fator R)';
-    } else {
-        dom.labelFatorR.textContent = 'Aplicar Fator R (Anexo III - 6,00% nacional / 15,50% sem Fator R)';
+    if (dom.labelFatorR) {
+        if (isExport) {
+            dom.labelFatorR.textContent = 'Aplicar Fator R (Anexo III - ~3,05% exportação / 9,30% sem Fator R)';
+        } else {
+            dom.labelFatorR.textContent = 'Aplicar Fator R (Anexo III - 6,00% nacional / 15,50% sem Fator R)';
+        }
     }
 
     // Cálculos
@@ -259,30 +270,30 @@ function updateUI() {
     const pjResult = calculatePJ(pjInputVal, currency, exchangeRate, spreadVal, pjAcc, isExport, useFatorR, appState.minWage);
 
     // Renderização dos Resultados CLT
-    dom.cltNetMonthly.textContent = formatBRL(cltResult.netMonthly);
-    dom.cltNetAnnual.textContent = formatBRL(cltResult.netAnnual);
-    dom.cltTaxInss.textContent = formatBRL(cltResult.breakdown.inss);
-    dom.cltTaxIrpf.textContent = formatBRL(cltResult.breakdown.irpf);
-    dom.cltTotalFgts.textContent = formatBRL(cltResult.breakdown.fgtsAnual);
+    if (dom.cltNetMonthly) dom.cltNetMonthly.textContent = formatBRL(cltResult.netMonthly);
+    if (dom.cltNetAnnual) dom.cltNetAnnual.textContent = formatBRL(cltResult.netAnnual);
+    if (dom.cltTaxInss) dom.cltTaxInss.textContent = formatBRL(cltResult.breakdown.inss);
+    if (dom.cltTaxIrpf) dom.cltTaxIrpf.textContent = formatBRL(cltResult.breakdown.irpf);
+    if (dom.cltTotalFgts) dom.cltTotalFgts.textContent = formatBRL(cltResult.breakdown.fgtsAnual);
 
     // Renderização dos Resultados PJ
-    dom.pjNetMonthly.textContent = formatBRL(pjResult.netMonthlyBRL);
-    dom.pjNetAnnual.textContent = formatBRL(pjResult.netAnnualBRL);
-    dom.pjTaxDas.textContent = formatBRL(pjResult.das);
-    dom.pjTaxInss.textContent = formatBRL(pjResult.inssPL);
-    dom.pjTaxIrpf.textContent = formatBRL(pjResult.irpfPL);
+    if (dom.pjNetMonthly) dom.pjNetMonthly.textContent = formatBRL(pjResult.netMonthlyBRL);
+    if (dom.pjNetAnnual) dom.pjNetAnnual.textContent = formatBRL(pjResult.netAnnualBRL);
+    if (dom.pjTaxDas) dom.pjTaxDas.textContent = formatBRL(pjResult.das);
+    if (dom.pjTaxInss) dom.pjTaxInss.textContent = formatBRL(pjResult.inssPL);
+    if (dom.pjTaxIrpf) dom.pjTaxIrpf.textContent = formatBRL(pjResult.irpfPL);
 
     if (currency === 'USD') {
-        dom.conversionPreview.style.display = 'block';
-        dom.pjConvertedBrl.textContent = formatBRL(pjResult.grossBRL);
-        dom.pjNetMonthlyUsdRow.style.display = 'flex';
-        dom.pjNetMonthlyUsd.textContent = formatUSD(pjResult.netMonthlyUSD);
-        dom.pjSpreadLine.style.display = 'flex';
-        dom.pjCostSpread.textContent = formatBRL(pjResult.cambioCost);
+        if (dom.conversionPreview) dom.conversionPreview.style.display = 'block';
+        if (dom.pjConvertedBrl) dom.pjConvertedBrl.textContent = formatBRL(pjResult.grossBRL);
+        if (dom.pjNetMonthlyUsdRow) dom.pjNetMonthlyUsdRow.style.display = 'flex';
+        if (dom.pjNetMonthlyUsd) dom.pjNetMonthlyUsd.textContent = formatUSD(pjResult.netMonthlyUSD);
+        if (dom.pjSpreadLine) dom.pjSpreadLine.style.display = 'flex';
+        if (dom.pjCostSpread) dom.pjCostSpread.textContent = formatBRL(pjResult.cambioCost);
     } else {
-        dom.conversionPreview.style.display = 'none';
-        dom.pjNetMonthlyUsdRow.style.display = 'none';
-        dom.pjSpreadLine.style.display = 'none';
+        if (dom.conversionPreview) dom.conversionPreview.style.display = 'none';
+        if (dom.pjNetMonthlyUsdRow) dom.pjNetMonthlyUsdRow.style.display = 'none';
+        if (dom.pjSpreadLine) dom.pjSpreadLine.style.display = 'none';
     }
 
     // Comparativo e Veredito
@@ -293,26 +304,36 @@ function updateUI() {
     const winner = isPjBetter ? 'PJ' : 'CLT';
     const loser = isPjBetter ? 'CLT' : 'PJ';
 
-    dom.verdictText.innerHTML = `${winner} é <span class="percentage" style="color: ${isPjBetter ? 'var(--success)' : 'var(--danger)'}">${percentage}%</span> mais vantajoso que ${loser}.`;
+    if (dom.verdictText) {
+        dom.verdictText.innerHTML = `${winner} é <span class="percentage" style="color: ${isPjBetter ? 'var(--success)' : 'var(--danger)'}">${percentage}%</span> mais vantajoso que ${loser}.`;
+    }
 
     // Barra proporcional
     const totalAnnual = pjResult.netAnnualBRL + cltResult.netAnnual;
     const ratio = totalAnnual > 0 ? Math.min(100, Math.max(5, (pjResult.netAnnualBRL / totalAnnual) * 100)) : 50;
-    dom.comparisonFill.style.width = `${ratio}%`;
+    if (dom.comparisonFill) {
+        dom.comparisonFill.style.width = `${ratio}%`;
+    }
 
     // Diferença Anual
-    dom.annualDiff.textContent = `${diff >= 0 ? '+' : ''} ${formatBRL(diff)}`;
-    dom.annualDiff.style.color = isPjBetter ? 'var(--success)' : 'var(--danger)';
+    if (dom.annualDiff) {
+        dom.annualDiff.textContent = `${diff >= 0 ? '+' : ''} ${formatBRL(diff)}`;
+        dom.annualDiff.style.color = isPjBetter ? 'var(--success)' : 'var(--danger)';
+    }
 
     // Ponto de Equilíbrio (Break-Even)
     const breakEven = calculateBreakEven(cltResult.netAnnual, currency, exchangeRate, spreadVal, pjAcc, isExport, useFatorR, appState.minWage);
-    dom.breakEvenPj.textContent = `${formatBRL(breakEven.breakEvenBRL)} / mês`;
+    if (dom.breakEvenPj) {
+        dom.breakEvenPj.textContent = `${formatBRL(breakEven.breakEvenBRL)} / mês`;
+    }
 
-    if (currency === 'USD' || isExport) {
-        dom.breakEvenPjUsd.style.display = 'block';
-        dom.breakEvenPjUsd.textContent = `Equivalente: ${formatUSD(breakEven.breakEvenUSD)} / mês`;
-    } else {
-        dom.breakEvenPjUsd.style.display = 'none';
+    if (dom.breakEvenPjUsd) {
+        if (currency === 'USD' || isExport) {
+            dom.breakEvenPjUsd.style.display = 'block';
+            dom.breakEvenPjUsd.textContent = `Equivalente: ${formatUSD(breakEven.breakEvenUSD)} / mês`;
+        } else {
+            dom.breakEvenPjUsd.style.display = 'none';
+        }
     }
 }
 
@@ -320,27 +341,37 @@ function updateUI() {
 function setCurrency(currency) {
     appState.selectedCurrency = currency;
     if (currency === 'USD') {
-        dom.btnCurrUsd.classList.add('active');
-        dom.btnCurrBrl.classList.remove('active');
-        dom.currencySymbol.textContent = '$';
-        dom.labelPjRate.textContent = 'Valor da Proposta Mensal (em USD)';
-        dom.intlFieldsGrid.style.display = 'grid';
-        if (parseFloat(dom.pjRate.value) > 10000) {
+        if (dom.btnCurrUsd) dom.btnCurrUsd.classList.add('active');
+        if (dom.btnCurrBrl) dom.btnCurrBrl.classList.remove('active');
+        if (dom.currencySymbol) dom.currencySymbol.textContent = '$';
+        if (dom.labelPjRate) dom.labelPjRate.textContent = 'Valor da Proposta Mensal (em USD)';
+        if (dom.intlFieldsGrid) dom.intlFieldsGrid.style.display = 'grid';
+        if (dom.pjRate && parseFloat(dom.pjRate.value) > 10000) {
             dom.pjRate.value = '4000';
             dom.pjRate.step = '250';
         }
     } else {
-        dom.btnCurrBrl.classList.add('active');
-        dom.btnCurrUsd.classList.remove('active');
-        dom.currencySymbol.textContent = 'R$';
-        dom.labelPjRate.textContent = 'Valor da Nota Fiscal Mensal (em R$)';
-        dom.intlFieldsGrid.style.display = 'none';
-        if (parseFloat(dom.pjRate.value) <= 10000) {
+        if (dom.btnCurrBrl) dom.btnCurrBrl.classList.add('active');
+        if (dom.btnCurrUsd) dom.btnCurrUsd.classList.remove('active');
+        if (dom.currencySymbol) dom.currencySymbol.textContent = 'R$';
+        if (dom.labelPjRate) dom.labelPjRate.textContent = 'Valor da Nota Fiscal Mensal (em R$)';
+        if (dom.intlFieldsGrid) dom.intlFieldsGrid.style.display = 'none';
+        if (dom.pjRate && parseFloat(dom.pjRate.value) <= 10000) {
             dom.pjRate.value = '18000';
             dom.pjRate.step = '500';
         }
     }
     updateUI();
+}
+
+// Helper seguro para timeout do fetch
+function getTimeoutSignal(ms) {
+    try {
+        if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+            return AbortSignal.timeout(ms);
+        }
+    } catch (e) {}
+    return undefined;
 }
 
 // Integração com APIs Abertas do Governo
@@ -351,66 +382,71 @@ async function fetchGovernmentData() {
 
     // 1. Cotação do Dólar PTAX (Banco Central do Brasil - SGS Série 1)
     try {
-        const res = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados/ultimos/1?formato=json', { signal: AbortSignal.timeout(4000) });
+        const signal = getTimeoutSignal(4000);
+        const res = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados/ultimos/1?formato=json', signal ? { signal } : {});
         if (res.ok) {
             const data = await res.json();
             if (Array.isArray(data) && data.length > 0 && data[0].valor) {
                 const parsedRate = parseFloat(data[0].valor);
                 if (!isNaN(parsedRate) && parsedRate > 0) {
                     appState.ptaxRate = parsedRate;
-                    dom.pjExchangeRate.value = parsedRate.toFixed(2);
-                    dom.tagPtax.textContent = `Dólar PTAX (BACEN): R$ ${parsedRate.toFixed(2)} (${data[0].data})`;
+                    if (dom.pjExchangeRate) dom.pjExchangeRate.value = parsedRate.toFixed(2);
+                    if (dom.tagPtax) dom.tagPtax.textContent = `Dólar PTAX (BACEN): R$ ${parsedRate.toFixed(2)} (${data[0].data})`;
                     ptaxLoaded = true;
                 }
             }
         }
     } catch (e) {
-        dom.tagPtax.textContent = `Dólar PTAX (Ref): R$ ${appState.ptaxRate.toFixed(2)}`;
+        if (dom.tagPtax) dom.tagPtax.textContent = `Dólar PTAX (Ref): R$ ${appState.ptaxRate.toFixed(2)}`;
     }
 
     // 2. Salário Mínimo Nacional (Banco Central do Brasil - SGS Série 1619)
     try {
-        const res = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1619/dados/ultimos/1?formato=json', { signal: AbortSignal.timeout(4000) });
+        const signal = getTimeoutSignal(4000);
+        const res = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1619/dados/ultimos/1?formato=json', signal ? { signal } : {});
         if (res.ok) {
             const data = await res.json();
             if (Array.isArray(data) && data.length > 0 && data[0].valor) {
                 const parsedWage = parseFloat(data[0].valor);
                 if (!isNaN(parsedWage) && parsedWage > 0) {
                     appState.minWage = parsedWage;
-                    dom.tagSalarioMinimo.textContent = `Salário Mínimo: R$ ${parsedWage.toFixed(2)}`;
+                    if (dom.tagSalarioMinimo) dom.tagSalarioMinimo.textContent = `Salário Mínimo: R$ ${parsedWage.toFixed(2)}`;
                     minWageLoaded = true;
                 }
             }
         }
     } catch (e) {
-        dom.tagSalarioMinimo.textContent = `Salário Mínimo (Ref): R$ ${appState.minWage.toFixed(2)}`;
+        if (dom.tagSalarioMinimo) dom.tagSalarioMinimo.textContent = `Salário Mínimo (Ref): R$ ${appState.minWage.toFixed(2)}`;
     }
 
     // 3. Indicadores de Inflação e Juros (BrasilAPI / BACEN)
     try {
-        const res = await fetch('https://brasilapi.com.br/api/taxas/v1', { signal: AbortSignal.timeout(4000) });
+        const signal = getTimeoutSignal(4000);
+        const res = await fetch('https://brasilapi.com.br/api/taxas/v1', signal ? { signal } : {});
         if (res.ok) {
             const data = await res.json();
             if (Array.isArray(data)) {
                 const ipcaObj = data.find(t => t.nome === 'IPCA');
                 if (ipcaObj && ipcaObj.valor) {
                     appState.ipcaRate = parseFloat(ipcaObj.valor);
-                    dom.tagIpca.textContent = `IPCA 12m: ${appState.ipcaRate}%`;
+                    if (dom.tagIpca) dom.tagIpca.textContent = `IPCA 12m: ${appState.ipcaRate}%`;
                     ipcaLoaded = true;
                 }
             }
         }
     } catch (e) {
-        dom.tagIpca.textContent = `IPCA 12m: ${appState.ipcaRate}%`;
+        if (dom.tagIpca) dom.tagIpca.textContent = `IPCA 12m: ${appState.ipcaRate}%`;
     }
 
     // Atualiza status global de conectividade
-    if (ptaxLoaded || minWageLoaded || ipcaLoaded) {
-        dom.statusDot.className = 'status-dot online';
-        dom.statusText.textContent = 'Dados oficiais sincronizados em tempo real (BACEN / BrasilAPI)';
-    } else {
-        dom.statusDot.className = 'status-dot';
-        dom.statusText.textContent = 'Parâmetros econômicos oficiais carregados (modo offline/referência)';
+    if (dom.statusDot && dom.statusText) {
+        if (ptaxLoaded || minWageLoaded || ipcaLoaded) {
+            dom.statusDot.className = 'status-dot online';
+            dom.statusText.textContent = 'Dados oficiais sincronizados em tempo real (BACEN / BrasilAPI)';
+        } else {
+            dom.statusDot.className = 'status-dot';
+            dom.statusText.textContent = 'Parâmetros econômicos oficiais carregados (modo offline/referência)';
+        }
     }
 
     updateUI();
@@ -418,8 +454,8 @@ async function fetchGovernmentData() {
 
 // Configuração dos Event Listeners
 function setupListeners() {
-    dom.btnCurrBrl.addEventListener('click', () => setCurrency('BRL'));
-    dom.btnCurrUsd.addEventListener('click', () => setCurrency('USD'));
+    if (dom.btnCurrBrl) dom.btnCurrBrl.addEventListener('click', () => setCurrency('BRL'));
+    if (dom.btnCurrUsd) dom.btnCurrUsd.addEventListener('click', () => setCurrency('USD'));
 
     const triggerInputs = [
         dom.cltSalary,
@@ -433,14 +469,24 @@ function setupListeners() {
     ];
 
     triggerInputs.forEach(input => {
-        input.addEventListener('input', updateUI);
-        input.addEventListener('change', updateUI);
+        if (input) {
+            input.addEventListener('input', updateUI);
+            input.addEventListener('change', updateUI);
+            input.addEventListener('keyup', updateUI);
+        }
     });
 }
 
-// Inicialização
-document.addEventListener('DOMContentLoaded', () => {
+// Inicialização segura
+function init() {
+    initDom();
     setupListeners();
     updateUI();
     fetchGovernmentData();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}

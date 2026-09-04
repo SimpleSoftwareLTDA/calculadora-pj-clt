@@ -142,7 +142,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.css?v=2.0.1">
 </head>
 
 <body>
@@ -199,17 +199,17 @@
                 <div class="results-preview">
                     <div class="result-row">
                         <span>Salário Líquido Mensal:</span>
-                        <span id="clt-net-monthly" class="value highlight">R$ 0,00</span>
+                        <span id="clt-net-monthly" class="value highlight">R$ 8.487,08</span>
                     </div>
                     <div class="result-row">
                         <span>Ganho Total Anual (Líquido + 13º + Férias + FGTS):</span>
-                        <span id="clt-net-annual" class="value">R$ 0,00</span>
+                        <span id="clt-net-annual" class="value">R$ 122.466,83</span>
                     </div>
 
                     <div class="taxes-breakdown" id="clt-taxes-breakdown">
-                        <div class="tax-line"><span>INSS CLT:</span> <span id="clt-tax-inss">R$ 0,00</span></div>
-                        <div class="tax-line"><span>IRPF CLT:</span> <span id="clt-tax-irpf">R$ 0,00</span></div>
-                        <div class="tax-line"><span>FGTS Anual (8%):</span> <span id="clt-total-fgts">R$ 0,00</span></div>
+                        <div class="tax-line"><span>INSS CLT:</span> <span id="clt-tax-inss">R$ 908,85</span></div>
+                        <div class="tax-line"><span>IRPF CLT:</span> <span id="clt-tax-irpf">R$ 1.604,07</span></div>
+                        <div class="tax-line"><span>FGTS Anual (8%):</span> <span id="clt-total-fgts">R$ 10.664,00</span></div>
                     </div>
                 </div>
             </div>
@@ -286,7 +286,7 @@
                 <div class="results-preview">
                     <div class="result-row">
                         <span>Líquido Mensal (Pós-Impostos):</span>
-                        <span id="pj-net-monthly" class="value highlight">R$ 0,00</span>
+                        <span id="pj-net-monthly" class="value highlight">R$ 16.250,11</span>
                     </div>
                     <div class="result-row" id="pj-net-monthly-usd-row" style="display: none;">
                         <span>Equivalente Líquido em USD:</span>
@@ -294,14 +294,14 @@
                     </div>
                     <div class="result-row">
                         <span>Líquido Total Anual:</span>
-                        <span id="pj-net-annual" class="value">R$ 0,00</span>
+                        <span id="pj-net-annual" class="value">R$ 195.001,32</span>
                     </div>
 
                     <!-- Breakdown details -->
                     <div class="taxes-breakdown" id="pj-taxes-breakdown">
-                        <div class="tax-line"><span>Simples Nacional (DAS):</span> <span id="pj-tax-das">R$ 0,00</span></div>
-                        <div class="tax-line"><span>INSS Pró-labore (11% sócio):</span> <span id="pj-tax-inss">R$ 0,00</span></div>
-                        <div class="tax-line"><span>IRPF Pró-labore:</span> <span id="pj-tax-irpf">R$ 0,00</span></div>
+                        <div class="tax-line"><span>Simples Nacional (DAS):</span> <span id="pj-tax-das">R$ 549,00</span></div>
+                        <div class="tax-line"><span>INSS Pró-labore (11% sócio):</span> <span id="pj-tax-inss">R$ 554,40</span></div>
+                        <div class="tax-line"><span>IRPF Pró-labore:</span> <span id="pj-tax-irpf">R$ 346,49</span></div>
                         <div class="tax-line" id="pj-spread-line" style="display: none;"><span>Custo de Câmbio (Spread):</span> <span id="pj-cost-spread">R$ 0,00</span></div>
                     </div>
                 </div>
@@ -313,22 +313,22 @@
             <h2>Veredito</h2>
             <div class="verdict-container">
                 <div class="comparison-bar">
-                    <div id="comparison-fill"></div>
+                    <div id="comparison-fill" style="width: 61.4%;"></div>
                 </div>
-                <div id="verdict-text">PJ é <span class="percentage">25%</span> mais vantajoso que CLT.</div>
+                <div id="verdict-text">PJ é <span class="percentage" style="color: var(--success)">59.2%</span> mais vantajoso que CLT.</div>
             </div>
 
             <div class="breakdown-grid">
                 <div class="breakdown-item">
                     <h3>Break-even</h3>
                     <p>Para igualar esse CLT, você precisaria de um PJ de no mínimo:</p>
-                    <span id="break-even-pj" class="value">R$ 13.500,00</span>
-                    <span id="break-even-pj-usd" class="sub-value" style="display: none;">US$ 2.673,00 / mês</span>
+                    <span id="break-even-pj" class="value">R$ 10.908,72 / mês</span>
+                    <span id="break-even-pj-usd" class="sub-value" style="display: none;">US$ 2.160,57 / mês</span>
                 </div>
                 <div class="breakdown-item">
                     <h3>Ganhos Reais</h3>
                     <p>Diferença anual em seu bolso:</p>
-                    <span id="annual-diff" class="value positive">+ R$ 42.000,00</span>
+                    <span id="annual-diff" class="value positive" style="color: var(--success);">+ R$ 72.534,49</span>
                 </div>
             </div>
         </section>
@@ -433,7 +433,7 @@
         </footer>
     </main>
 
-    <script src="index.js"></script>
+    <script src="index.js?v=2.0.1"></script>
 </body>
 
 </html>
