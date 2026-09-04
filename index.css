@@ -492,6 +492,150 @@ footer {
     }
 }
 
+/* API Status Bar */
+.api-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0.85rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 16px;
+    font-size: 0.85rem;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #eab308;
+    box-shadow: 0 0 10px #eab308;
+}
+
+.status-dot.online {
+    background: var(--success);
+    box-shadow: 0 0 10px var(--success);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.api-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.api-tag {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--card-border);
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-family: monospace;
+}
+
+/* Currency Switcher */
+.currency-selector-group {
+    margin-bottom: 1.25rem;
+}
+
+.currency-toggle {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+}
+
+.curr-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    padding: 0.6rem 0.8rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.curr-btn:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+}
+
+.curr-btn.active {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(124, 77, 255, 0.3);
+}
+
+/* International Fields */
+.intl-fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.conversion-preview {
+    background: rgba(124, 77, 255, 0.08);
+    border: 1px solid rgba(124, 77, 255, 0.2);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.85rem;
+}
+
+.conversion-preview strong {
+    color: var(--success);
+}
+
+/* Taxes Breakdown */
+.taxes-breakdown {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px dotted var(--card-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.tax-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.tax-line span:last-child {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.sub-value {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
 @media (max-width: 600px) {
     h1 {
         font-size: 2.5rem;
@@ -499,5 +643,14 @@ footer {
 
     #app-container {
         padding: 1rem;
+    }
+
+    .api-status-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .intl-fields-grid {
+        grid-template-columns: 1fr;
     }
 }
