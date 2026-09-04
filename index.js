@@ -681,6 +681,10 @@ function initLeadForm() {
             return;
         }
 
+        try {
+            window.open('https://robsoncassiano.software/7-passos-simples-dev-na-gringa', '_blank');
+        } catch (err) {}
+
         if (btn) btn.disabled = true;
         if (btnText) btnText.textContent = 'Enviando...';
         if (feedback) feedback.style.display = 'none';
@@ -703,7 +707,7 @@ function initLeadForm() {
             if (response.ok && data.success) {
                 if (feedback) {
                     feedback.className = 'lead-feedback success';
-                    feedback.textContent = data.message || 'Relatório enviado com sucesso. Verifique sua caixa de entrada.';
+                    feedback.innerHTML = 'Relatório enviado com sucesso. O guia também foi aberto em uma nova aba (<a href="https://robsoncassiano.software/7-passos-simples-dev-na-gringa" target="_blank" rel="noopener noreferrer" style="color: #4ade80; text-decoration: underline;">clique aqui se a aba foi bloqueada</a>).';
                     feedback.style.display = 'block';
                 }
                 if (btnText) btnText.textContent = 'Enviado com Sucesso ✓';
