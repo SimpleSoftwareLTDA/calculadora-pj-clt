@@ -95,7 +95,22 @@ function initDom() {
         verdictText: get('verdict-text'),
         breakEvenPj: get('break-even-pj'),
         breakEvenPjUsd: get('break-even-pj-usd'),
-        annualDiff: get('annual-diff')
+        annualDiff: get('annual-diff'),
+
+        // Ações de Compartilhamento
+        btnShareLink: get('btn-share-link'),
+        btnCopySummary: get('btn-copy-summary'),
+
+        // Captura de Lead
+        leadForm: get('lead-form'),
+        leadName: get('lead-name'),
+        leadEmail: get('lead-email'),
+        btnSubmitLead: get('btn-submit-lead'),
+        btnLeadText: get('btn-lead-text'),
+        leadFeedback: get('lead-feedback'),
+
+        // Toast de Notificação Flutuante
+        toastMsg: get('toast-msg')
     };
 }
 
@@ -335,6 +350,8 @@ function updateUI() {
             dom.breakEvenPjUsd.style.display = 'none';
         }
     }
+
+    updateURLParams();
 }
 
 // Alternância de Moeda
@@ -390,7 +407,9 @@ async function fetchGovernmentData() {
                 const parsedRate = parseFloat(data[0].valor);
                 if (!isNaN(parsedRate) && parsedRate > 0) {
                     appState.ptaxRate = parsedRate;
-                    if (dom.pjExchangeRate) dom.pjExchangeRate.value = parsedRate.toFixed(2);
+                    if (dom.pjExchangeRate && !dom.pjExchangeRate.dataset.userModified) {
+                        dom.pjExchangeRate.value = parsedRate.toFixed(2);
+                    }
                     if (dom.tagPtax) dom.tagPtax.textContent = `Dólar PTAX (BACEN): R$ ${parsedRate.toFixed(2)} (${data[0].data})`;
                     ptaxLoaded = true;
                 }
@@ -452,10 +471,276 @@ async function fetchGovernmentData() {
     updateUI();
 }
 
+// Notificação Flutuante (Toast)
+let toastTimer = null;
+function showToast(message) {
+    if (!dom.toastMsg) return;
+    dom.toastMsg.textContent = message;
+    dom.toastMsg.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+        if (dom.toastMsg) dom.toastMsg.classList.remove('show');
+    }, 3500);
+}
+
+// Cópia Segura para a Área de Transferência
+async function copyToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+        try {
+            await navigator.clipboard.writeText(text);
+            return true;
+        } catch (e) {}
+    }
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+        const successful = document.execCommand('copy');
+        textArea.remove();
+        return successful;
+    } catch (err) {
+        textArea.remove();
+        return false;
+    }
+}
+
+// Sincronização de Estado com Parâmetros de URL
+function syncStateFromURL() {
+    if (typeof window === 'undefined' || !window.location.search) return;
+    try {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.has('curr')) {
+            const curr = params.get('curr').toUpperCase();
+            if (curr === 'USD' || curr === 'BRL') {
+                setCurrency(curr);
+            }
+        }
+
+        if (params.has('clt') && dom.cltSalary) {
+            const clt = parseFloat(params.get('clt'));
+            if (!isNaN(clt) && clt >= 0) dom.cltSalary.value = clt;
+        }
+
+        if (params.has('ben') && dom.cltBenefits) {
+            const ben = parseFloat(params.get('ben'));
+            if (!isNaN(ben) && ben >= 0) dom.cltBenefits.value = ben;
+        }
+
+        if (params.has('pj') && dom.pjRate) {
+            const pj = parseFloat(params.get('pj'));
+            if (!isNaN(pj) && pj >= 0) dom.pjRate.value = pj;
+        }
+
+        if (params.has('rate') && dom.pjExchangeRate) {
+            const rate = parseFloat(params.get('rate'));
+            if (!isNaN(rate) && rate > 0) {
+                dom.pjExchangeRate.value = rate.toFixed(2);
+                dom.pjExchangeRate.dataset.userModified = 'true';
+            }
+        }
+
+        if (params.has('spread') && dom.pjSpread) {
+            const spread = parseFloat(params.get('spread'));
+            if (!isNaN(spread) && spread >= 0) dom.pjSpread.value = spread;
+        }
+
+        if (params.has('exp') && dom.pjExport) {
+            const exp = params.get('exp');
+            dom.pjExport.checked = (exp === '1' || exp === 'true');
+        }
+
+        if (params.has('fator') && dom.pjFatorR) {
+            const fator = params.get('fator');
+            dom.pjFatorR.checked = (fator === '1' || fator === 'true');
+        }
+    } catch (e) {
+        console.warn('Erro ao processar parâmetros da URL:', e);
+    }
+}
+
+function updateURLParams() {
+    if (typeof window === 'undefined' || !window.history || !window.history.replaceState) return;
+    try {
+        const params = new URLSearchParams();
+        const clt = dom.cltSalary ? dom.cltSalary.value : '';
+        const ben = dom.cltBenefits ? dom.cltBenefits.value : '';
+        const pj = dom.pjRate ? dom.pjRate.value : '';
+        const curr = appState.selectedCurrency;
+        const rate = dom.pjExchangeRate ? dom.pjExchangeRate.value : '';
+        const spread = dom.pjSpread ? dom.pjSpread.value : '';
+        const exp = dom.pjExport ? (dom.pjExport.checked ? '1' : '0') : '1';
+        const fator = dom.pjFatorR ? (dom.pjFatorR.checked ? '1' : '0') : '1';
+
+        if (clt) params.set('clt', clt);
+        if (ben) params.set('ben', ben);
+        if (pj) params.set('pj', pj);
+        if (curr) params.set('curr', curr);
+        if (curr === 'USD') {
+            if (rate) params.set('rate', rate);
+            if (spread) params.set('spread', spread);
+        }
+        params.set('exp', exp);
+        params.set('fator', fator);
+
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.replaceState(null, '', newUrl);
+    } catch (e) {}
+}
+
+// Compartilhamento Viral
+async function handleShareLink() {
+    updateURLParams();
+    const url = window.location.href;
+    const copied = await copyToClipboard(url);
+    if (copied) {
+        showToast('Link da simulação copiado com sucesso.');
+    } else {
+        showToast('Erro ao copiar link.');
+    }
+}
+
+async function handleCopySummary() {
+    updateURLParams();
+    const cltVal = dom.cltSalary ? (parseFloat(dom.cltSalary.value) || 0) : 0;
+    const cltBen = dom.cltBenefits ? (parseFloat(dom.cltBenefits.value) || 0) : 0;
+    const pjInputVal = dom.pjRate ? (parseFloat(dom.pjRate.value) || 0) : 0;
+    const currency = appState.selectedCurrency;
+    const exchangeRate = dom.pjExchangeRate ? (parseFloat(dom.pjExchangeRate.value) || appState.ptaxRate) : appState.ptaxRate;
+    const spreadVal = dom.pjSpread ? (parseFloat(dom.pjSpread.value) || 0) : 1.0;
+    const pjAcc = dom.pjAccounting ? (parseFloat(dom.pjAccounting.value) || 0) : 300;
+    const isExport = dom.pjExport ? dom.pjExport.checked : true;
+    const useFatorR = dom.pjFatorR ? dom.pjFatorR.checked : true;
+
+    const cltRes = calculateCLT(cltVal, cltBen);
+    const pjRes = calculatePJ(pjInputVal, currency, exchangeRate, spreadVal, pjAcc, isExport, useFatorR, appState.minWage);
+    const diff = pjRes.netAnnualBRL - cltRes.netAnnual;
+    const isPjBetter = diff >= 0;
+    const baseAnnual = cltRes.netAnnual > 0 ? cltRes.netAnnual : 1;
+    const pct = (Math.abs(diff) / baseAnnual * 100).toFixed(1);
+    const winner = isPjBetter ? 'PJ' : 'CLT';
+
+    const pjLabel = currency === 'USD'
+        ? `US$ ${pjInputVal.toLocaleString('en-US', { minimumFractionDigits: 2 })} (~${formatBRL(pjRes.grossBRL)})`
+        : formatBRL(pjInputVal);
+
+    const breakEven = calculateBreakEven(cltRes.netAnnual, currency, exchangeRate, spreadVal, pjAcc, isExport, useFatorR, appState.minWage);
+
+    const summaryText = [
+        '📊 Comparativo CLT vs PJ (Dev no Brasil e no Exterior):',
+        `• CLT Bruto: ${formatBRL(cltVal)} (Líquido mensal: ${formatBRL(cltRes.netMonthly)} | Anual: ${formatBRL(cltRes.netAnnual)})`,
+        `• PJ Faturamento: ${pjLabel} (Líquido mensal: ${formatBRL(pjRes.netMonthlyBRL)} | Anual: ${formatBRL(pjRes.netAnnualBRL)})`,
+        `🏆 Veredito: ${winner} com ${pct}% de vantagem (${diff >= 0 ? '+' : ''}${formatBRL(diff)}/ano).`,
+        `📌 Ponto de equilíbrio PJ: ${formatBRL(breakEven.breakEvenBRL)} / mês.`,
+        `🔗 Simulação completa: ${window.location.href}`
+    ].join('\n');
+
+    const copied = await copyToClipboard(summaryText);
+    if (copied) {
+        showToast('Resumo copiado com sucesso.');
+    } else {
+        showToast('Erro ao copiar resumo.');
+    }
+}
+
+// Captura de Leads Integrada com a API Oficial (eu.robsoncassiano.software)
+function initLeadForm() {
+    if (!dom.leadForm) return;
+
+    try {
+        const registered = localStorage.getItem('calc_lead_registered');
+        if (registered === 'true' && dom.btnLeadText) {
+            dom.btnLeadText.textContent = 'Relatório Solicitado ✓';
+        }
+    } catch (e) {}
+
+    dom.leadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const nameInput = dom.leadName;
+        const emailInput = dom.leadEmail;
+        const btn = dom.btnSubmitLead;
+        const btnText = dom.btnLeadText;
+        const feedback = dom.leadFeedback;
+
+        if (!emailInput || !nameInput) return;
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim().toLowerCase();
+
+        if (!email || !email.includes('@')) {
+            if (feedback) {
+                feedback.className = 'lead-feedback error';
+                feedback.textContent = 'Por favor, informe um e-mail válido.';
+                feedback.style.display = 'block';
+            }
+            return;
+        }
+
+        if (btn) btn.disabled = true;
+        if (btnText) btnText.textContent = 'Enviando...';
+        if (feedback) feedback.style.display = 'none';
+
+        try {
+            const response = await fetch('https://eu.robsoncassiano.software/api/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    source: 'calculadora-pj-clt'
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                if (feedback) {
+                    feedback.className = 'lead-feedback success';
+                    feedback.textContent = data.message || 'Relatório enviado com sucesso. Verifique sua caixa de entrada.';
+                    feedback.style.display = 'block';
+                }
+                if (btnText) btnText.textContent = 'Enviado com Sucesso ✓';
+                try {
+                    localStorage.setItem('calc_lead_registered', 'true');
+                } catch (err) {}
+                dom.leadForm.reset();
+                showToast('Relatório solicitado. Verifique sua caixa de entrada.');
+            } else {
+                if (feedback) {
+                    feedback.className = 'lead-feedback error';
+                    feedback.textContent = data.error || 'Não foi possível registrar seu e-mail no momento. Tente novamente.';
+                    feedback.style.display = 'block';
+                }
+                if (btn) btn.disabled = false;
+                if (btnText) btnText.textContent = 'Receber Relatório Gratuito →';
+            }
+        } catch (err) {
+            if (feedback) {
+                feedback.className = 'lead-feedback error';
+                feedback.textContent = 'Falha de conexão. Verifique sua rede e tente novamente.';
+                feedback.style.display = 'block';
+            }
+            if (btn) btn.disabled = false;
+            if (btnText) btnText.textContent = 'Receber Relatório Gratuito →';
+        }
+    });
+}
+
 // Configuração dos Event Listeners
 function setupListeners() {
     if (dom.btnCurrBrl) dom.btnCurrBrl.addEventListener('click', () => setCurrency('BRL'));
     if (dom.btnCurrUsd) dom.btnCurrUsd.addEventListener('click', () => setCurrency('USD'));
+    if (dom.btnShareLink) dom.btnShareLink.addEventListener('click', handleShareLink);
+    if (dom.btnCopySummary) dom.btnCopySummary.addEventListener('click', handleCopySummary);
+
+    initLeadForm();
 
     const triggerInputs = [
         dom.cltSalary,
@@ -467,6 +752,12 @@ function setupListeners() {
         dom.pjExport,
         dom.pjFatorR
     ];
+
+    if (dom.pjExchangeRate) {
+        dom.pjExchangeRate.addEventListener('input', () => {
+            dom.pjExchangeRate.dataset.userModified = 'true';
+        });
+    }
 
     triggerInputs.forEach(input => {
         if (input) {
@@ -480,6 +771,7 @@ function setupListeners() {
 // Inicialização segura
 function init() {
     initDom();
+    syncStateFromURL();
     setupListeners();
     updateUI();
     fetchGovernmentData();

@@ -653,4 +653,402 @@ footer {
     .intl-fields-grid {
         grid-template-columns: 1fr;
     }
+
+    .lead-inputs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lead-btn-group label {
+        display: none;
+    }
+
+    .btn-submit-lead {
+        width: 100%;
+    }
+
+    .verdict-cta {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-verdict-cta {
+        width: 100%;
+        text-align: center;
+    }
+
+    .toast-notification {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+        text-align: center;
+    }
+}
+
+/* Breadcrumb Semântico */
+.breadcrumb-nav {
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+}
+
+.breadcrumb-nav ol {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.breadcrumb-nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-nav a:hover {
+    color: var(--accent-color);
+}
+
+.breadcrumb-nav .separator {
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+.breadcrumb-nav li:last-child {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* BLUF - Resumo Executivo / Veredito Rápido */
+.bluf-box {
+    margin-bottom: 2rem;
+    padding: 1.25rem 1.5rem;
+    border-left: 4px solid var(--accent-color);
+    background: rgba(124, 77, 255, 0.05);
+    border-radius: 12px;
+}
+
+.bluf-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-color);
+    background: rgba(124, 77, 255, 0.15);
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    margin-bottom: 0.6rem;
+}
+
+.bluf-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+/* Mecanismos de Compartilhamento Viral */
+.share-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-main);
+}
+
+.btn-action:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.btn-action:active {
+    transform: translateY(0);
+}
+
+/* CTA Contextualizada no Veredito */
+.verdict-cta {
+    margin-top: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.12) 0%, rgba(68, 138, 255, 0.12) 100%);
+    border: 1px solid rgba(124, 77, 255, 0.3);
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.verdict-cta-info h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.35rem;
+}
+
+.verdict-cta-info p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    max-width: 600px;
+}
+
+.btn-verdict-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-gradient);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px rgba(124, 77, 255, 0.35);
+}
+
+.btn-verdict-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124, 77, 255, 0.5);
+}
+
+/* Captura de Lead */
+.lead-capture-card {
+    margin-top: 3rem;
+    padding: 2.25rem;
+    border-radius: 20px;
+    border: 1px solid rgba(124, 77, 255, 0.25);
+    background: radial-gradient(circle at 10% 20%, rgba(124, 77, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 90%);
+}
+
+.lead-header .badge-accent {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #448aff;
+    background: rgba(68, 138, 255, 0.15);
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+}
+
+.lead-header h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: #ffffff;
+}
+
+.lead-header p {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    max-width: 780px;
+}
+
+.lead-inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1rem;
+    align-items: end;
+}
+
+.lead-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.lead-input-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.lead-input-group input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border);
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-family: var(--font-main);
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.lead-input-group input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(124, 77, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.lead-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.lead-btn-group label {
+    font-size: 0.82rem;
+    visibility: hidden;
+}
+
+.btn-submit-lead {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    border: none;
+    padding: 0.8rem 1.4rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    font-family: var(--font-main);
+    box-shadow: 0 4px 14px rgba(124, 77, 255, 0.35);
+}
+
+.btn-submit-lead:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124, 77, 255, 0.5);
+}
+
+.btn-submit-lead:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.lead-feedback {
+    margin-top: 1rem;
+    padding: 0.85rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    animation: fadeInDown 0.3s ease-out;
+}
+
+.lead-feedback.success {
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #4ade80;
+}
+
+.lead-feedback.error {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #f87171;
+}
+
+/* Matriz Semântica de Mercado */
+.matrix-section {
+    margin-top: 3rem;
+    padding: 2.25rem;
+    border-radius: 20px;
+}
+
+.matrix-header h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: #ffffff;
+}
+
+.matrix-header p {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 1rem 1.15rem;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.comparison-table th {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.comparison-table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.comparison-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.comparison-table td {
+    color: var(--text-secondary);
+}
+
+.comparison-table td strong {
+    color: var(--text-primary);
+}
+
+/* Toast de Notificação Flutuante */
+.toast-notification {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #1e2235;
+    color: #ffffff;
+    padding: 0.85rem 1.4rem;
+    border-radius: 10px;
+    border: 1px solid rgba(124, 77, 255, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-notification.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
