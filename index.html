@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora CLT vs PJ para Devs: Salário Líquido e Mercado Internacional</title>
+    <title>Calculadora CLT vs PJ para Devs: Salário Líquido e Dólar</title>
     <meta name="description"
-        content="Calculadora CLT vs PJ para desenvolvedores com dados reais e oficiais atualizados via APIs do Banco Central (PTAX e Salário Mínimo), Simples Nacional com Fator R e isenção de exportação.">
+        content="Compare salário CLT e PJ para desenvolvedores com dados oficiais do Banco Central. Simule Simples Nacional, Fator R de 6% e contratos em dólar com precisão.">
     <meta name="keywords"
-        content="calculadora clt pj, calculadora pj clt, dados reais oficiais, apis governo bacen, ptax tempo real, dev na gringa, impostos dev, simples nacional fator r, salario programador exterior, break-even pj">
+        content="calculadora clt pj, calculadora pj clt, clt vs pj dev, simples nacional fator r, salario programador exterior, break-even pj, dev na gringa">
     <meta name="author" content="Robson Cassiano">
-    <link rel="canonical" href="https://calculadora.robsoncassiano.software/" />
+    <link rel="canonical" href="https://calculadora.robsoncassiano.software/">
+
+    <!-- Suporte à Internacionalização -->
+    <link rel="alternate" hreflang="pt-BR" href="https://calculadora.robsoncassiano.software/">
+    <link rel="alternate" hreflang="x-default" href="https://calculadora.robsoncassiano.software/">
     
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
@@ -20,21 +24,28 @@
     <link rel="shortcut icon" href="/img/favicon/favicon.ico">
     <meta name="theme-color" content="#0f172a">
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Meta / WhatsApp / LinkedIn -->
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Simple Software">
     <meta property="og:url" content="https://calculadora.robsoncassiano.software/">
-    <meta property="og:title" content="Calculadora CLT vs PJ para Devs: Salário Líquido e Mercado Internacional">
+    <meta property="og:title" content="Calculadora CLT vs PJ para Devs: Salário Líquido e Dólar">
     <meta property="og:description"
-        content="Compare salários CLT e PJ com dados reais e oficiais atualizados em tempo real via Banco Central do Brasil e Receita Federal. Análise precisa para mercado nacional e internacional.">
+        content="Simulação exata de ganho líquido entre contratos CLT e PJ para desenvolvedores de software com alíquotas oficiais do Banco Central e Receita Federal.">
     <meta property="og:image" content="https://calculadora.robsoncassiano.software/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Simulador Comparativo CLT vs PJ para Desenvolvedores de Software">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://calculadora.robsoncassiano.software/">
-    <meta property="twitter:title" content="Calculadora CLT vs PJ para Devs: Salário Líquido e Mercado Internacional">
-    <meta property="twitter:description"
-        content="Compare salários CLT e PJ com dados reais e oficiais atualizados em tempo real via Banco Central do Brasil e Receita Federal. Análise precisa para mercado nacional e internacional.">
-    <meta property="twitter:image" content="https://calculadora.robsoncassiano.software/og-image.png">
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@RobsonDev">
+    <meta name="twitter:creator" content="@RobsonDev">
+    <meta name="twitter:url" content="https://calculadora.robsoncassiano.software/">
+    <meta name="twitter:title" content="Calculadora CLT vs PJ para Devs: Salário Líquido e Dólar">
+    <meta name="twitter:description"
+        content="Compare salário líquido CLT e PJ nacional ou internacional com taxas PTAX em tempo real e Fator R a 6%.">
+    <meta name="twitter:image" content="https://calculadora.robsoncassiano.software/og-image.png">
 
     <!-- Structured Data (JSON-LD) - Grafo Unificado de Autoridade Máxima (E-E-A-T & AEO) -->
     <script type="application/ld+json">
@@ -45,9 +56,24 @@
           "@type": "WebSite",
           "@id": "https://calculadora.robsoncassiano.software/#website",
           "url": "https://calculadora.robsoncassiano.software/",
-          "name": "Calculadora CLT vs PJ para Devs: Salário Líquido e Mercado Internacional",
-          "description": "Calculadora comparativa entre contratos CLT e PJ para desenvolvedores de software no Brasil e no exterior (Dev na Gringa), com cotação PTAX em tempo real e isenção tributária de exportação.",
+          "name": "Calculadora CLT vs PJ para Devs",
+          "description": "Calculadora comparativa entre contratos CLT e PJ para desenvolvedores de software no Brasil e no exterior com cotação PTAX em tempo real e isenção tributária de exportação.",
           "publisher": { "@id": "https://calculadora.robsoncassiano.software/#organization" },
+          "inLanguage": "pt-BR"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://calculadora.robsoncassiano.software/#webpage",
+          "url": "https://calculadora.robsoncassiano.software/",
+          "name": "Calculadora CLT vs PJ para Devs: Salário Líquido e Dólar",
+          "isPartOf": { "@id": "https://calculadora.robsoncassiano.software/#website" },
+          "breadcrumb": { "@id": "https://calculadora.robsoncassiano.software/#breadcrumb" },
+          "mainEntity": { "@id": "https://calculadora.robsoncassiano.software/#app" },
+          "about": [
+            { "@type": "Thing", "name": "Calculadora Salarial CLT vs PJ" },
+            { "@type": "Thing", "name": "Simples Nacional Fator R" },
+            { "@type": "Thing", "name": "Desenvolvimento de Software para o Exterior" }
+          ],
           "inLanguage": "pt-BR"
         },
         {
@@ -131,19 +157,22 @@
           ]
         },
         {
-          "@type": "WebApplication",
+          "@type": ["WebApplication", "SoftwareApplication"],
           "@id": "https://calculadora.robsoncassiano.software/#app",
           "name": "Calculadora CLT vs PJ para Devs: Salário Líquido e Mercado Internacional",
           "url": "https://calculadora.robsoncassiano.software/",
           "applicationCategory": "FinanceApplication",
+          "applicationSubCategory": "Calculadora Salarial e Tributária",
+          "softwareVersion": "2.1.0",
           "operatingSystem": "All",
           "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "screenshot": "https://calculadora.robsoncassiano.software/og-image.png",
           "description": "Calculadora comparativa entre contratos PJ e CLT para desenvolvedores com dados reais e oficiais atualizados via APIs do Banco Central do Brasil (SGS Séries 1 e 1619) e BrasilAPI, com regras tributárias vigentes da Receita Federal e Lei Complementar 123/2006.",
           "isBasedOn": [
             "https://www.bcb.gov.br/",
             "https://brasilapi.com.br/",
             "https://www.gov.br/receitafederal/pt-br",
-            "http://www.planalto.gov.br/ccivil_03/leis/lcp/lcp123.htm"
+            "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp123.htm"
           ],
           "featureList": [
             "Dados reais e oficiais atualizados via APIs abertas do Banco Central do Brasil e BrasilAPI",
@@ -176,34 +205,34 @@
             },
             {
               "@type": "Question",
-              "name": "O que vale mais a pena: PJ ou CLT para DEV?",
+              "name": "Qual a diferença real entre PJ e CLT para Devs?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Depende do valor bruto e dos benefícios. Para contratos no Brasil, o PJ costuma compensar com nota de 30% a 50% superior ao CLT. Em contratos internacionais (Dev na Gringa), o ganho em moeda forte (USD/EUR) com alíquota reduzida de exportação (~3,05% no Simples Nacional) amplia significativamente a vantagem financeira."
+                "text": "No CLT o profissional conta com 13º, férias com 1/3 e FGTS obrigatório. No PJ o faturamento líquido costuma ser consideravelmente maior, permitindo reinvestimento e autonomia na gestão do patrimônio. Para contratos internacionais (Dev na Gringa), o ganho em dólar com a tributação reduzida de exportação amplia a vantagem líquida."
               }
             },
             {
               "@type": "Question",
-              "name": "Como funciona a tributação na exportação de serviços de software?",
+              "name": "Como funciona a tributação na exportação de software para o exterior?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Serviços de desenvolvimento de software prestados para empresas no exterior contam com isenção de ISS, PIS e COFINS no Simples Nacional (LC 123/2006). A alíquota inicial no Anexo III cai de 6,00% para cerca de 3,05%."
+                "text": "A prestação de serviços de TI para o exterior conta com isenção constitucional e legal de ISS, PIS e COFINS no Simples Nacional (Lei Complementar 123/2006). Quando enquadrado no Anexo III através do Fator R, a alíquota inicial cai de 6,00% para cerca de 3,05%."
               }
             },
             {
               "@type": "Question",
-              "name": "Como funciona o Fator R no Simples Nacional?",
+              "name": "Como o Fator R reduz impostos no Simples Nacional?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "O Fator R permite enquadrar a empresa de tecnologia no Anexo III em vez do Anexo V, desde que a folha de pagamento com Pró-labore represente ao menos 28% do faturamento."
+                "text": "O Fator R permite enquadrar a empresa de desenvolvimento de software no Anexo III em vez do Anexo V, desde que a folha de pagamento (incluindo o Pró-labore do sócio) represente ao menos 28% do faturamento mensal."
               }
             },
             {
               "@type": "Question",
-              "name": "Como é calculado o INSS do sócio no PJ?",
+              "name": "Como o INSS do sócio é calculado no PJ?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Diferente do empregado CLT que utiliza faixas progressivas, o sócio de empresa optante pelo Simples Nacional recolhe 11% de INSS sobre o valor do Pró-labore como contribuinte individual, respeitando o teto previdenciário."
+                "text": "O sócio administrador optante pelo Simples Nacional recolhe 11% de INSS como contribuinte individual sobre o valor do Pró-labore fixado, respeitando o teto previdenciário e o piso do salário mínimo oficial."
               }
             },
             {
@@ -211,7 +240,7 @@
               "name": "Essa calculadora considera férias, 13º e FGTS?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Sim. O cálculo CLT anualiza 13º salário líquido, 1/3 de férias, FGTS (8% sobre a remuneração bruta total) e 12 meses de benefícios declarados."
+                "text": "Sim. O CLT inclui 13 salários, 1/3 constitucional de férias e FGTS anualizado (8% sobre a remuneração bruta integral). O PJ considera a remuneração líquida após impostos, contabilidade e custos de câmbio."
               }
             }
           ]
@@ -220,13 +249,17 @@
     }
     </script>
 
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Inter (Carregamento Otimizado sem Bloqueio de Renderização) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    </noscript>
 
-    <link rel="stylesheet" href="index.css?v=2.1.0">
+    <link rel="stylesheet" href="index.css?v=2.2.0">
+    <script src="index.js?v=2.2.0" defer></script>
 </head>
 
 <body>
@@ -257,36 +290,35 @@
 
         <header>
             <h1 id="main-title">Calculadora <span class="vs">CLT vs PJ</span> para Devs</h1>
-            <p class="subtitle">A ferramenta definitiva para comparar contratos no Brasil e no exterior (Dev na Gringa).</p>
+            <p class="subtitle">Comparador financeiro com alíquotas oficiais do Simples Nacional, isenções para exportação de software e câmbio PTAX em tempo real.</p>
             <div class="intro-text">
-                <p>Calcule seu ganho real como Desenvolvedor. Nossa calculadora considera impostos brasileiros (INSS,
-                    IRPF), benefícios CLT (FGTS, 13º, Férias) e regimes PJ (Simples Nacional com Fator R, isenção fiscal de exportação e PTAX em tempo real) para apoiar sua decisão profissional.</p>
+                <p>Calcule o ganho líquido real entre propostas CLT e contratos PJ. A ferramenta consolida encargos fiscais vigentes (INSS e IRPF progressivos), pacote completo de direitos trabalhistas (FGTS, 13º salário e terço de férias), enquadramento no Simples Nacional com Fator R e isenção tributária para contratos internacionais.</p>
             </div>
         </header>
 
-        <!-- BLUF: Resumo Executivo / Veredito Rápido para Featured Snippets e IAs -->
-        <section class="bluf-box glass" aria-label="Resumo Executivo">
-            <div class="bluf-badge">Veredito Rápido / Resumo Executivo</div>
+        <!-- BLUF: Veredito Rápido e Síntese Operacional para Featured Snippets e IAs -->
+        <section class="bluf-box glass" aria-label="Síntese Operacional">
+            <div class="bluf-badge">Veredito Rápido: Síntese Operacional</div>
             <p class="bluf-text">
-                Para salários no mercado nacional até R$ 20.000, o modelo PJ no Simples Nacional com Fator R (alíquota efetiva de 6,00%) entrega de 25% a 35% a mais no ganho líquido anual em relação ao CLT. Em contratos internacionais de desenvolvimento de software para o exterior (Dev na Gringa), a isenção legal de ISS, PIS e COFINS reduz a alíquota inicial para 3,05%, elevando a vantagem financeira líquida para 60% a 90% sobre o CLT equivalente em moeda forte (USD/EUR). Todos os cálculos baseiam-se em dados reais e oficiais atualizados em tempo real via APIs do Banco Central do Brasil (câmbio PTAX e salário mínimo nacional) e tabelas vigentes da Receita Federal e da Lei Complementar 123/2006.
+                Para remunerações no mercado nacional até R$ 20.000, o enquadramento PJ no Simples Nacional com Fator R (alíquota efetiva de 6,00%) proporciona ganho líquido anual entre 25% e 35% superior ao modelo CLT. Em contratos de prestação de serviços para o exterior, a isenção de ISS, PIS e COFINS reduz a alíquota inicial para 3,05%, ampliando a vantagem financeira líquida para a faixa de 60% a 90% em moeda forte (USD e EUR). Os cálculos utilizam dados oficiais atualizados via APIs do Banco Central do Brasil e as tabelas da Lei Complementar 123/2006.
             </p>
         </section>
 
-        <!-- API Live Data Indicator -->
+        <!-- Indicador de Sincronização de Dados Econômicos Oficiais -->
         <div class="api-status-bar glass" id="api-status-bar">
             <div class="status-indicator">
-                <span class="status-dot online" id="status-dot"></span>
-                <span id="api-status-text">Conectando aos dados abertos do Banco Central...</span>
+                <span class="status-dot online" id="status-dot" aria-hidden="true"></span>
+                <span id="api-status-text" role="status" aria-live="polite">Conectando aos dados abertos do Banco Central...</span>
             </div>
-            <div class="api-tags" id="api-tags">
+            <div class="api-tags" id="api-tags" aria-label="Indicadores econômicos sincronizados">
                 <span class="api-tag" id="tag-ptax">Dólar PTAX: Sincronizando...</span>
                 <span class="api-tag" id="tag-salario-minimo">Salário Mínimo: Sincronizando...</span>
                 <span class="api-tag" id="tag-ipca">IPCA: Sincronizando...</span>
             </div>
         </div>
 
-        <section class="calculator-grid">
-            <!-- CLT Section -->
+        <section class="calculator-grid" aria-label="Entradas e Resultados da Simulação CLT versus PJ">
+            <!-- Seção CLT -->
             <div class="card glass" id="clt-card">
                 <h2>CLT (Consolidação das Leis do Trabalho)</h2>
                 <div class="input-group">
@@ -323,28 +355,28 @@
                 </div>
             </div>
 
-            <!-- PJ Section -->
+            <!-- Seção PJ -->
             <div class="card glass" id="pj-card">
                 <h2>PJ (Pessoa Jurídica)</h2>
 
-                <!-- Currency Selector -->
+                <!-- Seletor de Moeda Acessível -->
                 <div class="currency-selector-group">
-                    <label>Moeda do Contrato</label>
-                    <div class="currency-toggle">
-                        <button type="button" class="curr-btn active" id="btn-curr-brl" data-curr="BRL">BRL (R$)</button>
-                        <button type="button" class="curr-btn" id="btn-curr-usd" data-curr="USD">USD ($) Exterior</button>
+                    <span id="currency-group-label" class="group-label">Moeda do Contrato</span>
+                    <div class="currency-toggle" role="group" aria-labelledby="currency-group-label">
+                        <button type="button" class="curr-btn active" id="btn-curr-brl" data-curr="BRL" aria-pressed="true">BRL (R$)</button>
+                        <button type="button" class="curr-btn" id="btn-curr-usd" data-curr="USD" aria-pressed="false">USD ($) Exterior</button>
                     </div>
                 </div>
 
                 <div class="input-group" id="group-pj-rate">
-                    <label for="pj-rate" id="label-pj-rate">Valor da Nota Fiscal Mensal</label>
+                    <label for="pj-rate" id="label-pj-rate">Valor da Nota Fiscal Mensal (em R$)</label>
                     <div class="input-wrapper">
                         <span class="currency" id="pj-currency-symbol">R$</span>
                         <input type="number" id="pj-rate" value="18000" step="500">
                     </div>
                 </div>
 
-                <!-- International Fields (visible when USD or Export) -->
+                <!-- Campos Internacionais -->
                 <div class="intl-fields-grid" id="intl-fields-grid" style="display: none;">
                     <div class="input-group">
                         <label for="pj-exchange-rate">Cotação Dólar PTAX (BACEN)</label>
@@ -355,7 +387,7 @@
                     </div>
 
                     <div class="input-group">
-                        <label for="pj-spread">Spread Cambial / Taxa Plataforma (%)</label>
+                        <label for="pj-spread">Spread Cambial / Taxa de Plataforma (%)</label>
                         <div class="input-wrapper">
                             <span class="currency">%</span>
                             <input type="number" id="pj-spread" value="1.0" step="0.1" min="0" max="10">
@@ -371,7 +403,7 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="pj-accounting">Custo de Contabilidade + Taxas Fixas</label>
+                    <label for="pj-accounting">Custo de Contabilidade e Taxas Corporativas</label>
                     <div class="input-wrapper">
                         <span class="currency">R$</span>
                         <input type="number" id="pj-accounting" value="300" step="50">
@@ -388,7 +420,7 @@
                 <div class="toggle-group">
                     <label>
                         <input type="checkbox" id="pj-fator-r" checked>
-                        <span id="label-fator-r">Aplicar Fator R (Anexo III - ~3,05% exportação / 6% nacional)</span>
+                        <span id="label-fator-r">Aplicar Fator R (Anexo III: ~3,05% exportação / 6,00% nacional)</span>
                     </label>
                 </div>
 
@@ -406,7 +438,7 @@
                         <span id="pj-net-annual" class="value">R$ 195.001,32</span>
                     </div>
 
-                    <!-- Breakdown details -->
+                    <!-- Detalhamento dos Impostos -->
                     <div class="taxes-breakdown" id="pj-taxes-breakdown">
                         <div class="tax-line"><span>Simples Nacional (DAS):</span> <span id="pj-tax-das">R$ 549,00</span></div>
                         <div class="tax-line"><span>INSS Pró-labore (11% sócio):</span> <span id="pj-tax-inss">R$ 554,40</span></div>
@@ -417,11 +449,11 @@
             </div>
         </section>
 
-        <!-- Summary & Comparison -->
-        <section class="comparison-summary glass">
-            <h2>Veredito</h2>
+        <!-- Síntese e Comparativo -->
+        <section class="comparison-summary glass" aria-labelledby="heading-verdict">
+            <h2 id="heading-verdict">Veredito</h2>
             <div class="verdict-container">
-                <div class="comparison-bar">
+                <div class="comparison-bar" role="meter" aria-label="Proporção comparativa de rendimento anual líquido" aria-valuemin="0" aria-valuemax="100" aria-valuenow="61" id="comparison-meter">
                     <div id="comparison-fill" style="width: 61.4%;"></div>
                 </div>
                 <div id="verdict-text">PJ é <span class="percentage" style="color: var(--success)">59.2%</span> mais vantajoso que CLT.</div>
@@ -429,14 +461,14 @@
 
             <div class="breakdown-grid">
                 <div class="breakdown-item">
-                    <h3>Break-even</h3>
+                    <h3>Ponto de Equilíbrio</h3>
                     <p>Para igualar esse CLT, você precisaria de um PJ de no mínimo:</p>
                     <span id="break-even-pj" class="value">R$ 10.908,72 / mês</span>
                     <span id="break-even-pj-usd" class="sub-value" style="display: none;">US$ 2.160,57 / mês</span>
                 </div>
                 <div class="breakdown-item">
-                    <h3>Ganhos Reais</h3>
-                    <p>Diferença anual em seu bolso:</p>
+                    <h3>Retenção Líquida</h3>
+                    <p>Patrimônio adicional líquido acumulado por ano:</p>
                     <span id="annual-diff" class="value positive" style="color: var(--success);">+ R$ 72.534,49</span>
                 </div>
             </div>
@@ -444,34 +476,34 @@
             <!-- Mecanismos de Compartilhamento Viral -->
             <div class="share-actions">
                 <button type="button" class="btn-action" id="btn-share-link">
-                    <span class="icon">🔗</span> Copiar Link da Simulação
+                    <span class="icon" aria-hidden="true">🔗</span> Copiar Link da Simulação
                 </button>
                 <button type="button" class="btn-action" id="btn-copy-summary">
-                    <span class="icon">📋</span> Copiar Resumo em Texto
+                    <span class="icon" aria-hidden="true">📋</span> Copiar Resumo em Texto
                 </button>
             </div>
 
-            <!-- CTA Contextualizada de Alta Conversão no Veredito -->
+            <!-- CTA Contextualizada no Veredito -->
             <div class="verdict-cta">
                 <div class="verdict-cta-info">
-                    <h4>Alcance essa faixa salarial no mercado internacional</h4>
-                    <p>Aprenda o método validado por mais de 5 anos de contratações reais para negociar de US$ 5.000 a US$ 10.000/mês diretamente com empresas dos EUA e Europa.</p>
+                    <h3>Conquiste remunerações de US$ 5.000 a US$ 10.000 mensais no mercado externo</h3>
+                    <p>Aprenda a metodologia fundamentada em contratações reais para conduzir entrevistas técnicas em inglês e negociar contratos diretamente com companhias dos Estados Unidos e Europa.</p>
                 </div>
-                <a href="https://pay.hotmart.com/G101388470S" target="_blank" class="btn-verdict-cta">
-                    Conhecer o Método Descomplica DEV Na Gringa &rarr;
+                <a href="https://pay.hotmart.com/G101388470S" target="_blank" rel="noopener noreferrer" class="btn-verdict-cta">
+                    Acessar a Formação Descomplica DEV Na Gringa <span class="sr-only">(abre em nova aba)</span> &rarr;
                 </a>
             </div>
         </section>
 
-        <!-- Captura de Lead: Relatório Detalhado + Guia Fiscal (Integrado com API eu.robsoncassiano.software) -->
-        <section class="lead-capture-card glass" id="lead-capture-section">
+        <!-- Captura de Lead: Parecer Fiscal Personalizado e Minuta B2B -->
+        <section class="lead-capture-card glass" id="lead-capture-section" aria-labelledby="heading-lead-capture">
             <div class="lead-header">
-                <span class="badge-accent">RELATÓRIO GRATUITO</span>
-                <h2>Receba a Simulação Detalhada em PDF + Guia Fiscal Dev na Gringa</h2>
-                <p>Enviaremos para o seu e-mail o detalhamento completo dos seus números com planejamento tributário do Simples Nacional, Fator R, regras de isenção de ISS/PIS/COFINS e modelo de contrato B2B internacional.</p>
+                <span class="badge-accent">MATERIAL DE PLANEJAMENTO</span>
+                <h2 id="heading-lead-capture">Receba o Parecer Fiscal Personalizado e Minuta de Contrato B2B Internacional</h2>
+                <p>Enviaremos para seu endereço eletrônico o cálculo analítico com enquadramento no Simples Nacional, alíquotas com Fator R, bases legais de desoneração na exportação e modelo formal de contrato de prestação de serviços para o exterior.</p>
             </div>
 
-            <form id="lead-form" class="lead-form">
+            <form id="lead-form" class="lead-form" novalidate>
                 <div class="lead-inputs-grid">
                     <div class="lead-input-group">
                         <label for="lead-name">Seu Nome</label>
@@ -482,24 +514,24 @@
                         <input type="email" id="lead-email" placeholder="dev@exemplo.com" required autocomplete="email">
                     </div>
                     <div class="lead-btn-group">
-                        <label>&nbsp;</label>
                         <button type="submit" id="btn-submit-lead" class="btn-submit-lead">
-                            <span id="btn-lead-text">Receber Relatório Gratuito &rarr;</span>
+                            <span id="btn-lead-text">Baixar Parecer Fiscal e Minuta B2B &rarr;</span>
                         </button>
                     </div>
                 </div>
-                <div id="lead-feedback" class="lead-feedback" style="display: none;"></div>
+                <div id="lead-feedback" class="lead-feedback" role="status" aria-live="polite" aria-atomic="true" style="display: none;"></div>
             </form>
         </section>
 
         <!-- Matriz Semântica para AEO e Google AI Overviews -->
-        <section class="matrix-section glass" aria-label="Tabela Comparativa Salarial CLT vs PJ">
+        <section class="matrix-section glass" aria-labelledby="heading-matrix">
             <div class="matrix-header">
-                <h2>Matriz Comparativa de Mercado: CLT vs PJ Nacional vs PJ Internacional</h2>
-                <p>Referência consolidada de rendimento líquido mensal e anual para desenvolvedores de software, considerando Simples Nacional com Fator R (6% nacional / 3,05% exportação) e benefícios médios CLT.</p>
+                <h2 id="heading-matrix">Matriz Comparativa de Mercado: CLT vs PJ Nacional vs PJ Internacional</h2>
+                <p>Referência consolidada de rendimento líquido mensal e anual para desenvolvedores de software, considerando Simples Nacional com Fator R (6,00% nacional / 3,05% exportação) e benefícios médios CLT.</p>
             </div>
-            <div class="table-responsive">
+            <div class="table-responsive" tabindex="0" role="region" aria-label="Tabela Comparativa de Mercado CLT versus PJ">
                 <table class="comparison-table">
+                    <caption class="sr-only">Comparativo salarial de remuneração líquida mensal e anual entre CLT, PJ Nacional e PJ Internacional</caption>
                     <thead>
                         <tr>
                             <th scope="col">Salário Base / Proposta</th>
@@ -511,42 +543,42 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>R$ 5.000 / mês</strong></td>
+                            <th scope="row">R$ 5.000 / mês</th>
                             <td>R$ 4.793,00 (c/ R$ 800 ben)</td>
                             <td>R$ 4.316,00</td>
                             <td>US$ 980 / mês</td>
                             <td>R$ 5.600 / mês</td>
                         </tr>
                         <tr>
-                            <td><strong>R$ 10.000 / mês</strong></td>
+                            <th scope="row">R$ 10.000 / mês</th>
                             <td>R$ 8.487,00 (c/ R$ 1k ben)</td>
                             <td>R$ 8.790,00</td>
                             <td>US$ 2.160 / mês</td>
                             <td>R$ 10.908 / mês</td>
                         </tr>
                         <tr>
-                            <td><strong>R$ 15.000 / mês</strong></td>
+                            <th scope="row">R$ 15.000 / mês</th>
                             <td>R$ 12.012,00 (c/ R$ 1.2k ben)</td>
                             <td>R$ 13.250,00</td>
                             <td>US$ 3.280 / mês</td>
                             <td>R$ 15.877 / mês</td>
                         </tr>
                         <tr>
-                            <td><strong>R$ 20.000 / mês</strong></td>
+                            <th scope="row">R$ 20.000 / mês</th>
                             <td>R$ 15.485,00 (c/ R$ 1.5k ben)</td>
                             <td>R$ 17.680,00</td>
                             <td>US$ 4.410 / mês</td>
                             <td>R$ 21.050 / mês</td>
                         </tr>
                         <tr>
-                            <td><strong>US$ 3.000 / mês (~R$ 15.150)</strong></td>
+                            <th scope="row">US$ 3.000 / mês (~R$ 15.150)</th>
                             <td>R$ 12.100,00 (CLT equiv.)</td>
                             <td>R$ 13.380,00</td>
                             <td><strong style="color: var(--success)">R$ 13.585,00 líquido</strong></td>
                             <td>R$ 15.950 / mês</td>
                         </tr>
                         <tr>
-                            <td><strong>US$ 5.000 / mês (~R$ 25.250)</strong></td>
+                            <th scope="row">US$ 5.000 / mês (~R$ 25.250)</th>
                             <td>R$ 18.900,00 (CLT equiv.)</td>
                             <td>R$ 22.100,00</td>
                             <td><strong style="color: var(--success)">R$ 22.840,00 líquido</strong></td>
@@ -557,44 +589,39 @@
             </div>
         </section>
 
-        <!-- Alex Hormozi Style CTA -->
-        <section class="hormozi-cta glass">
+        <!-- Seção de Oferta e Conversão -->
+        <section class="hormozi-cta glass" aria-labelledby="heading-offer">
             <div class="cta-content">
-                <span class="badge">OFERTA ÚNICA PARA DEVS SENIORES</span>
-                <h2>Seu Código Vale Dólar. <br>Você Só Não Sabe o Caminho.</h2>
-                <p class="cta-main-text">Não jogue o jogo da adivinhação. Enquanto você calcula impostos no Brasil, meus
-                    alunos estão sendo aprovados em vagas internacionais usando um banco de dados de 5 anos de
-                    entrevistas reais.</p>
+                <span class="badge">FORMAÇÃO PROFISSIONAL PARA DESENVOLVEDORES SENIORES</span>
+                <h2 id="heading-offer">Seu Trabalho Técnico Tem Valor Global em Moeda Forte</h2>
+                <p class="cta-main-text">Permanecer restrito ao mercado nacional limita seu teto salarial em reais, sujeitando seu patrimônio à desvalorização cambial. O método Descomplica DEV Na Gringa entrega o passo a passo técnico, linguístico e burocrático para você ser aprovado em processos seletivos internacionais e receber em dólar ou euro com regularidade jurídica.</p>
 
                 <div class="offer-list">
                     <div class="offer-item">
-                        <span class="icon">✅</span>
-                        <p><strong>Aprovação Auditável:</strong> Nada de "eu acho". Acesse o método baseado em
-                            evidências reais.</p>
+                        <span class="icon" aria-hidden="true">✅</span>
+                        <p><strong>Aprovação Fundamentada em Evidências:</strong> Acesso ao acervo estruturado de entrevistas técnicas reais analisadas ao longo de cinco anos.</p>
                     </div>
                     <div class="offer-item">
-                        <span class="icon">✅</span>
-                        <p><strong>Suporte Direto:</strong> Fale com quem trabalha na Epic Games e já recrutou para o
-                            mundo todo.</p>
+                        <span class="icon" aria-hidden="true">✅</span>
+                        <p><strong>Orientação Direta:</strong> Instrução com Robson Cassiano, engenheiro de software na Epic Games e professor certificado pela University of Cambridge (CELTA).</p>
                     </div>
                     <div class="offer-item">
-                        <span class="icon">✅</span>
-                        <p><strong>Risco Zero:</strong> 7 dias de garantia incondicional. Ou você gosta, ou eu te
-                            devolvo cada centavo.</p>
+                        <span class="icon" aria-hidden="true">✅</span>
+                        <p><strong>Segurança Contratual e Garantia:</strong> Período de avaliação de 7 dias com devolução integral do valor mediante requisição simples.</p>
                     </div>
                 </div>
 
                 <div class="cta-action">
-                    <a href="https://pay.hotmart.com/G101388470S" class="btn-primary" target="_blank">
-                        QUERO ACESSAR O MÉTODO AGORA
-                        <small>Acesso Vitalício + Todas as Atualizações</small>
+                    <a href="https://pay.hotmart.com/G101388470S" class="btn-primary" target="_blank" rel="noopener noreferrer">
+                        Garantir Vaga na Formação Internacional <span class="sr-only">(abre em nova aba)</span>
+                        <small>Acesso Vitalício e Atualizações Contínuas</small>
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- AEO Content Section -->
-        <section class="info-section glass">
+        <!-- Dúvidas Frequentes e Glossário (AEO) -->
+        <section class="info-section glass" aria-label="Dúvidas Frequentes e Glossário Tributário">
             <div class="faq-group">
                 <h2>Dúvidas Frequentes (FAQ)</h2>
                 <div class="faq-item">
@@ -639,7 +666,7 @@
                         <dd>Taxa de câmbio oficial calculada diariamente pelo Banco Central do Brasil, usada como referência no mercado.</dd>
                     </div>
                     <div>
-                        <dt>Break-even Point</dt>
+                        <dt>Ponto de Equilíbrio (Break-Even)</dt>
                         <dd>Faturamento mínimo mensal necessário no PJ para igualar o total líquido anual do contrato CLT.</dd>
                     </div>
                 </dl>
@@ -647,22 +674,21 @@
 
             <div class="sources">
                 <p>Fontes oficiais e APIs em tempo real: 
-                    <a href="https://www.bcb.gov.br/" target="_blank">Banco Central do Brasil (SGS Séries 1, 1619 e 13522)</a> | 
-                    <a href="https://brasilapi.com.br/" target="_blank">BrasilAPI</a> | 
-                    <a href="https://www.gov.br/receitafederal/pt-br" target="_blank">Receita Federal</a> | 
-                    <a href="http://www.planalto.gov.br/ccivil_03/leis/lcp/lcp123.htm" target="_blank">Lei Complementar 123/2006</a>
+                    <a href="https://www.bcb.gov.br/" target="_blank" rel="noopener noreferrer">Banco Central do Brasil (SGS Séries 1, 1619 e 13522)</a> | 
+                    <a href="https://brasilapi.com.br/" target="_blank" rel="noopener noreferrer">BrasilAPI</a> | 
+                    <a href="https://www.gov.br/receitafederal/pt-br" target="_blank" rel="noopener noreferrer">Receita Federal</a> | 
+                    <a href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp123.htm" target="_blank" rel="noopener noreferrer">Lei Complementar 123/2006</a>
                 </p>
             </div>
         </section>
 
         <footer>
             <p><a href="https://treinamento.robsoncassiano.software/" target="_blank"
-                    rel="noopener noreferrer"><strong>Descomplica DEV Na Gringa</strong></a> - Cálculos integrados com APIs oficiais do Banco Central do Brasil e tabelas tributárias vigentes.</p>
+                    rel="noopener noreferrer"><strong>Descomplica DEV Na Gringa</strong></a>: cálculos integrados com APIs abertas do Banco Central do Brasil e parâmetros tributários vigentes.</p>
         </footer>
     </main>
 
-    <div id="toast-msg" class="toast-notification"></div>
-    <script src="index.js?v=2.1.0"></script>
+    <div id="toast-msg" class="toast-notification" role="status" aria-live="polite" aria-atomic="true"></div>
 </body>
 
 </html>

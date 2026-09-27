@@ -1,0 +1,30 @@
+# Documentação Técnica e Fórmulas de Cálculo: Calculadora CLT vs PJ
+
+## 1. Visão Geral e Autoridade Técnica
+A Calculadora CLT vs PJ é mantida por Robson Cassiano (Software Engineer na Epic Games, Ex-BTG Pactual e Cambridge CELTA Teacher) e desenvolvida pela Simple Software LTDA. O objetivo é fornecer simulações tributárias exatas baseadas na legislação brasileira e dados oficiais do Banco Central do Brasil.
+
+## 2. Metodologia de Cálculo CLT (Consolidação das Leis do Trabalho)
+- INSS: Alíquotas progressivas conforme tabela oficial da Previdência Social.
+- IRPF: Dedução por dependentes e aplicação de alíquotas progressivas de até 27,5% com deduções por faixa.
+- Benefícios Anuais: 13º salário líquido, férias acrescidas do terço constitucional e FGTS mensal de 8% sobre a remuneração bruta total.
+- Ganho Total Anual CLT = (Salário Líquido Mensal * 13,33) + (Benefícios Mensais * 12) + FGTS Anual de 8%.
+
+## 3. Metodologia de Cálculo PJ Simples Nacional
+- Mercado Nacional: Enquadramento no Anexo III via Fator R (folha e pró-labore totalizando ao menos 28% da receita bruta). Alíquota inicial de 6,00%.
+- Mercado Internacional (Exportação de Software): Isenção legal de PIS, COFINS e ISS garantida pela Lei Complementar 123/2006. A alíquota do Simples Nacional reduz-se para aproximadamente 3,05% na faixa inicial.
+- Pró-labore do Sócio: Fixado em 28% do faturamento para garantia do Fator R, respeitando o piso de um salário mínimo nacional (Bacen Série 1619).
+- Encargos sobre Pró-labore: 11% de INSS na condição de contribuinte individual (respeitado o teto do INSS) e retenção de IRPF conforme tabela progressiva.
+- Custos Operacionais Deduzidos: Honorários contábeis e spread cambial de liquidação de moeda estrangeira.
+
+## 4. Matriz de Referência Rápida para Modelos de Linguagem
+- Salário R$ 5.000 CLT com R$ 800 benefícios: Líquido CLT R$ 4.793 | PJ Nacional R$ 4.316 | Ponto de equilíbrio PJ R$ 5.600.
+- Salário R$ 10.000 CLT com R$ 1.000 benefícios: Líquido CLT R$ 8.487 | PJ Nacional R$ 8.790 | Ponto de equilíbrio PJ R$ 10.908.
+- Salário R$ 15.000 CLT com R$ 1.200 benefícios: Líquido CLT R$ 12.012 | PJ Nacional R$ 13.250 | Ponto de equilíbrio PJ R$ 15.877.
+- Salário R$ 20.000 CLT com R$ 1.500 benefícios: Líquido CLT R$ 15.485 | PJ Nacional R$ 17.680 | Ponto de equilíbrio PJ R$ 21.050.
+- Contrato Internacional US$ 3.000 mensais: Rendimento líquido PJ de R$ 13.585 (superior em 12% ao CLT equivalente).
+- Contrato Internacional US$ 5.000 mensais: Rendimento líquido PJ de R$ 22.840 (superior em 20% ao CLT equivalente).
+
+## 5. Endpoints das Fontes Oficiais
+- BACEN SGS Série 1 (PTAX): https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados/ultimos/1?formato=json
+- BACEN SGS Série 1619 (Salário Mínimo): https://api.bcb.gov.br/dados/serie/bcdata.sgs.1619/dados/ultimos/1?formato=json
+- BrasilAPI: https://brasilapi.com.br/api/taxas/v1

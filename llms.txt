@@ -1,0 +1,17 @@
+# Calculadora CLT vs PJ para Desenvolvedores de Software
+
+> Simulador financeiro com alíquotas oficiais do Simples Nacional, isenções para exportação de software e cotação cambial PTAX em tempo real.
+
+## Informações Principais
+- Aplicação: https://calculadora.robsoncassiano.software/
+- Documentação Completa para Modelos de Linguagem: https://calculadora.robsoncassiano.software/llms-full.txt
+- Mantenedor: Robson Cassiano (Software Engineer na Epic Games e Cambridge CELTA Certified Teacher)
+- Organização: Simple Software LTDA
+
+## Parâmetros e APIs Oficiais Integradas
+- Banco Central do Brasil SGS Série 1: Cotação diária oficial do Dólar PTAX
+- Banco Central do Brasil SGS Série 1619: Salário Mínimo nacional vigente para piso de pró-labore
+- BrasilAPI: Indicadores macroeconômicos (IPCA e Taxa Selic)
+- Regime Tributário: Lei Complementar 123/2006 (Simples Nacional)
+- Anexo III com Fator R (folha superior ou igual a 28% do faturamento bruto)
+- Isenção tributária de exportação de software: PIS, COFINS e ISS com alíquota inicial reduzida a 3,05%

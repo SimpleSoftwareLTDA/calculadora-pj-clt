@@ -1,20 +1,21 @@
 # Calculadora PJ vs CLT para Devs | Descomplica DEV Na Gringa
 
-Calculadora web para comparar contratos PJ e CLT no mercado de tecnologia, com foco em desenvolvedores brasileiros que trabalham (ou querem trabalhar) na gringa. Inclui cálculo de INSS, IRPF, Simples Nacional (Anexo III e V), Fator R, benefícios CLT e ponto de equilíbrio.
+Calculadora comparativa entre contratos PJ e CLT no mercado de tecnologia, desenvolvida para profissionais brasileiros que atuam ou buscam oportunidades no exterior. A ferramenta contempla deduções progressivas de INSS e IRPF, Simples Nacional (Anexos III e V), enquadramento no Fator R, benefícios trabalhistas CLT, cálculo de ponto de equilíbrio e desoneração tributária para exportação de software com cotação PTAX em tempo real.
 
-Demo: https://calculadora.robsoncassiano.software/
+Demonstração pública: https://calculadora.robsoncassiano.software/
 
 ## Por que este projeto
 
-Esta calculadora foi criada para ajudar devs a tomar decisões financeiras reais com base em regras tributárias brasileiras. O objetivo é explicar, de forma clara, quando o PJ compensa e como comparar cenários com benefícios CLT.
+Esta aplicação fundamenta escolhas contratuais de desenvolvedores de software com base em dados matemáticos e tributários oficiais. A ferramenta demonstra o ponto exato em que a constituição de Pessoa Jurídica supera o rendimento da CLT, analisando as especificidades da prestação de serviços ao exterior com isenção fiscal no Simples Nacional e câmbio em tempo real.
 
 ## Principais recursos
 
-- Comparação PJ vs CLT com valores líquidos mensais e anuais.
-- Cálculo de impostos: INSS, IRPF, DAS do Simples Nacional.
-- Simulação de Fator R para Anexo III.
-- Break-even automático entre PJ e CLT.
-- FAQ e glossário para esclarecer termos comuns.
+- Comparação financeira entre CLT e PJ com discriminação de valores líquidos mensais e anuais.
+- Encargos tributários detalhados: INSS progressivo, IRPF com parcelas a deduzir e DAS do Simples Nacional.
+- Simulação de Fator R para redução da alíquota inicial no Anexo III.
+- Integração em tempo real com APIs abertas do Banco Central do Brasil (câmbio PTAX SGS 1 e salário mínimo SGS 1619) e BrasilAPI.
+- Cálculo de convergência numérica do ponto de equilíbrio (Break-Even) em reais e dólares.
+- Tabela comparativa de mercado, dúvidas frequentes (FAQ) e glossário tributário.
 
 ## Palavras-chave
 
@@ -22,24 +23,21 @@ calculadora pj vs clt, dev na gringa, programador pj ou clt, simulador de salár
 
 ## Como usar localmente
 
-1. Baixe ou clone este repositório.
-2. Abra `index.html` no navegador.
+1. Clone este repositório.
+2. Execute o servidor de desenvolvimento:
+```bash
+bun dev
+```
+3. Acesse `http://localhost:3000` no navegador.
 
-Não há dependências ou build.
-
-## SEO e indexação
+## SEO, AEO e Indexação
 
 Este projeto inclui:
 
-- Meta tags descritivas e Open Graph.
-- JSON-LD com FAQ e dados estruturados.
-- `sitemap.xml` e `robots.txt`.
-
-Se você fizer um fork, atualize:
-
-- `index.html` (título, descrição, canonical e JSON-LD).
-- `sitemap.xml` (URL e `lastmod`).
-- `robots.txt` (URL do sitemap).
+- Metatags de alto CTR e Open Graph / Twitter Cards com especificações oficiais.
+- Grafo unificado de autoridade máxima em JSON-LD (WebSite, WebPage, BreadcrumbList, Organization, Person, WebApplication, FAQPage).
+- Documentação dedicada para modelos de inteligência artificial em `/llms.txt` e `/llms-full.txt`.
+- `sitemap.xml` com suporte a indexação de imagens e `robots.txt` com liberação explícita de rastreadores de IA.
 
 ## Licença
 

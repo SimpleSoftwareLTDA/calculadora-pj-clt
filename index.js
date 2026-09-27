@@ -92,6 +92,7 @@ function initDom() {
 
         // Comparativo & Veredito
         comparisonFill: get('comparison-fill'),
+        comparisonMeter: get('comparison-meter'),
         verdictText: get('verdict-text'),
         breakEvenPj: get('break-even-pj'),
         breakEvenPjUsd: get('break-even-pj-usd'),
@@ -125,7 +126,7 @@ function formatUSD(value) {
 
 // Funções de Cálculo Fiscal CLT
 function calculateINSS_CLT(gross) {
-    if (gross <= 0) return 0;
+    if (!gross || gross <= 0 || isNaN(gross)) return 0;
     const maxContribution = 908.85;
     if (gross >= TABLES.INSS_TETO) return maxContribution;
 
@@ -138,7 +139,7 @@ function calculateINSS_CLT(gross) {
 }
 
 function calculateIRPF(taxableIncome) {
-    if (taxableIncome <= 0) return 0;
+    if (!taxableIncome || taxableIncome <= 0 || isNaN(taxableIncome)) return 0;
     for (const bracket of TABLES.IRPF) {
         if (taxableIncome <= bracket.limit) {
             return Math.max(0, (taxableIncome * bracket.rate) - bracket.deduction);
@@ -148,16 +149,19 @@ function calculateIRPF(taxableIncome) {
 }
 
 function calculateCLT(gross, benefits) {
-    const inss = calculateINSS_CLT(gross);
-    const taxableIncome = Math.max(0, gross - inss);
+    const validGross = Math.max(0, parseFloat(gross) || 0);
+    const validBenefits = Math.max(0, parseFloat(benefits) || 0);
+
+    const inss = calculateINSS_CLT(validGross);
+    const taxableIncome = Math.max(0, validGross - inss);
     const irpf = calculateIRPF(taxableIncome);
 
-    const netSalaryMonthly = gross - inss - irpf;
-    const netMonthlyWithBenefits = netSalaryMonthly + benefits;
+    const netSalaryMonthly = validGross - inss - irpf;
+    const netMonthlyWithBenefits = netSalaryMonthly + validBenefits;
 
     // Anual: 13,33 salários líquidos (12 meses + 13º + 1/3 de férias) + 12 meses benefícios + FGTS (8% s/ 13,33)
-    const fgtsAnual = gross * 13.33 * 0.08;
-    const netAnnual = (netSalaryMonthly * 13.33) + (benefits * 12) + fgtsAnual;
+    const fgtsAnual = validGross * 13.33 * 0.08;
+    const netAnnual = (netSalaryMonthly * 13.33) + (validBenefits * 12) + fgtsAnual;
 
     return {
         netMonthly: netMonthlyWithBenefits,
@@ -166,16 +170,17 @@ function calculateCLT(gross, benefits) {
     };
 }
 
-// Funções de Cálculo Fiscal PJ
 function calculatePJ(grossInput, currency, exchangeRate, spreadPercent, accounting, isExport, useFatorR, minWage) {
+    const validGrossInput = Math.max(0, parseFloat(grossInput) || 0);
+    const validSpread = Math.min(100, Math.max(0, parseFloat(spreadPercent) || 0));
     let effectiveExchangeRate = 1;
-    let grossBRL = grossInput;
+    let grossBRL = validGrossInput;
     let cambioCost = 0;
 
     if (currency === 'USD') {
-        effectiveExchangeRate = exchangeRate * (1 - (spreadPercent / 100));
-        grossBRL = grossInput * effectiveExchangeRate;
-        cambioCost = grossInput * exchangeRate * (spreadPercent / 100);
+        effectiveExchangeRate = Math.max(0.01, exchangeRate * (1 - (validSpread / 100)));
+        grossBRL = validGrossInput * effectiveExchangeRate;
+        cambioCost = validGrossInput * exchangeRate * (validSpread / 100);
     }
 
     // Alíquota Simples Nacional
@@ -193,23 +198,24 @@ function calculatePJ(grossInput, currency, exchangeRate, spreadPercent, accounti
     let inssPL = 0;
     let irpfPL = 0;
 
-    if (useFatorR) {
-        proLabore = Math.max(minWage, grossBRL * 0.28);
-    } else {
-        // Sem Fator R, o sócio que trabalha retira no mínimo o piso previdenciário (salário mínimo)
-        proLabore = minWage;
+    if (grossBRL > 0) {
+        if (useFatorR) {
+            proLabore = Math.max(minWage, grossBRL * 0.28);
+        } else {
+            proLabore = minWage;
+        }
+
+        // INSS do Sócio no Simples Nacional: 11% fixo até o teto do INSS
+        const inssBase = Math.min(proLabore, TABLES.INSS_TETO);
+        inssPL = inssBase * 0.11;
+
+        // IRPF sobre o Pró-labore
+        const taxablePL = Math.max(0, proLabore - inssPL);
+        irpfPL = calculateIRPF(taxablePL);
     }
 
-    // INSS do Sócio no Simples Nacional: 11% fixo até o teto do INSS (Contribuinte Individual)
-    const inssBase = Math.min(proLabore, TABLES.INSS_TETO);
-    inssPL = inssBase * 0.11;
-
-    // IRPF sobre o Pró-labore
-    const taxablePL = Math.max(0, proLabore - inssPL);
-    irpfPL = calculateIRPF(taxablePL);
-
     const totalTaxes = das + inssPL + irpfPL;
-    const netMonthlyBRL = grossBRL - totalTaxes - accounting;
+    const netMonthlyBRL = Math.max(0, grossBRL - totalTaxes - accounting);
     const netAnnualBRL = netMonthlyBRL * 12;
 
     const netMonthlyUSD = effectiveExchangeRate > 0 ? (netMonthlyBRL / effectiveExchangeRate) : 0;
@@ -231,36 +237,34 @@ function calculatePJ(grossInput, currency, exchangeRate, spreadPercent, accounti
 
 // Cálculo Exato de Break-Even (Convergência Numérica)
 function calculateBreakEven(targetAnnualCLT, currency, exchangeRate, spreadPercent, accounting, isExport, useFatorR, minWage) {
-    if (targetAnnualCLT <= 0) return { breakEvenBRL: 0, breakEvenUSD: 0 };
+    if (!targetAnnualCLT || targetAnnualCLT <= 0 || isNaN(targetAnnualCLT)) {
+        return { breakEvenBRL: 0, breakEvenUSD: 0 };
+    }
 
     let low = 0;
     let high = Math.max(10000, targetAnnualCLT * 2);
     let breakEvenBRL = 0;
 
-    // Busca binária com 30 iterações (precisão de centavos)
     for (let i = 0; i < 30; i++) {
         const mid = (low + high) / 2;
         const sim = calculatePJ(mid, 'BRL', 1, 0, accounting, isExport, useFatorR, minWage);
-        if (sim.netAnnualBRL < targetAnnualCLT) {
-            low = mid;
-        } else {
+        if (sim.netAnnualBRL >= targetAnnualCLT) {
+            breakEvenBRL = mid;
             high = mid;
+        } else {
+            low = mid;
         }
-        breakEvenBRL = mid;
     }
 
-    const effectiveExchangeRate = exchangeRate * (1 - (spreadPercent / 100));
-    const breakEvenUSD = effectiveExchangeRate > 0 ? (breakEvenBRL / effectiveExchangeRate) : 0;
+    const validSpread = Math.min(100, Math.max(0, parseFloat(spreadPercent) || 0));
+    const effectiveRate = Math.max(0.01, exchangeRate * (1 - (validSpread / 100)));
+    const breakEvenUSD = effectiveRate > 0 ? (breakEvenBRL / effectiveRate) : 0;
 
     return { breakEvenBRL, breakEvenUSD };
 }
 
 // Atualização da Interface
 function updateUI() {
-    if (!dom.cltSalary) {
-        initDom();
-    }
-
     const cltVal = dom.cltSalary ? (parseFloat(dom.cltSalary.value) || 0) : 10000;
     const cltBen = dom.cltBenefits ? (parseFloat(dom.cltBenefits.value) || 0) : 1000;
     const pjInputVal = dom.pjRate ? (parseFloat(dom.pjRate.value) || 0) : 18000;
@@ -271,12 +275,12 @@ function updateUI() {
     const useFatorR = dom.pjFatorR ? dom.pjFatorR.checked : true;
     const currency = appState.selectedCurrency;
 
-    // Atualiza label do Fator R conforme status de exportação
+    // Atualiza rótulo do Fator R
     if (dom.labelFatorR) {
         if (isExport) {
-            dom.labelFatorR.textContent = 'Aplicar Fator R (Anexo III - ~3,05% exportação / 9,30% sem Fator R)';
+            dom.labelFatorR.textContent = 'Aplicar Fator R (Anexo III: ~3,05% exportação / 9,30% sem Fator R)';
         } else {
-            dom.labelFatorR.textContent = 'Aplicar Fator R (Anexo III - 6,00% nacional / 15,50% sem Fator R)';
+            dom.labelFatorR.textContent = 'Aplicar Fator R (Anexo III: 6,00% nacional / 15,50% sem Fator R)';
         }
     }
 
@@ -284,14 +288,14 @@ function updateUI() {
     const cltResult = calculateCLT(cltVal, cltBen);
     const pjResult = calculatePJ(pjInputVal, currency, exchangeRate, spreadVal, pjAcc, isExport, useFatorR, appState.minWage);
 
-    // Renderização dos Resultados CLT
+    // Renderiza saídas CLT
     if (dom.cltNetMonthly) dom.cltNetMonthly.textContent = formatBRL(cltResult.netMonthly);
     if (dom.cltNetAnnual) dom.cltNetAnnual.textContent = formatBRL(cltResult.netAnnual);
     if (dom.cltTaxInss) dom.cltTaxInss.textContent = formatBRL(cltResult.breakdown.inss);
     if (dom.cltTaxIrpf) dom.cltTaxIrpf.textContent = formatBRL(cltResult.breakdown.irpf);
     if (dom.cltTotalFgts) dom.cltTotalFgts.textContent = formatBRL(cltResult.breakdown.fgtsAnual);
 
-    // Renderização dos Resultados PJ
+    // Renderiza saídas PJ
     if (dom.pjNetMonthly) dom.pjNetMonthly.textContent = formatBRL(pjResult.netMonthlyBRL);
     if (dom.pjNetAnnual) dom.pjNetAnnual.textContent = formatBRL(pjResult.netAnnualBRL);
     if (dom.pjTaxDas) dom.pjTaxDas.textContent = formatBRL(pjResult.das);
@@ -320,7 +324,16 @@ function updateUI() {
     const loser = isPjBetter ? 'CLT' : 'PJ';
 
     if (dom.verdictText) {
-        dom.verdictText.innerHTML = `${winner} é <span class="percentage" style="color: ${isPjBetter ? 'var(--success)' : 'var(--danger)'}">${percentage}%</span> mais vantajoso que ${loser}.`;
+        dom.verdictText.textContent = '';
+        const span = document.createElement('span');
+        span.className = 'percentage';
+        span.style.color = isPjBetter ? 'var(--success)' : 'var(--danger)';
+        span.textContent = `${percentage}%`;
+        dom.verdictText.append(
+            document.createTextNode(`${winner} é `),
+            span,
+            document.createTextNode(` mais vantajoso que ${loser}.`)
+        );
     }
 
     // Barra proporcional
@@ -328,6 +341,9 @@ function updateUI() {
     const ratio = totalAnnual > 0 ? Math.min(100, Math.max(5, (pjResult.netAnnualBRL / totalAnnual) * 100)) : 50;
     if (dom.comparisonFill) {
         dom.comparisonFill.style.width = `${ratio}%`;
+    }
+    if (dom.comparisonMeter) {
+        dom.comparisonMeter.setAttribute('aria-valuenow', Math.round(ratio));
     }
 
     // Diferença Anual
@@ -350,16 +366,23 @@ function updateUI() {
             dom.breakEvenPjUsd.style.display = 'none';
         }
     }
-
-    updateURLParams();
 }
 
 // Alternância de Moeda
 function setCurrency(currency) {
     appState.selectedCurrency = currency;
-    if (currency === 'USD') {
-        if (dom.btnCurrUsd) dom.btnCurrUsd.classList.add('active');
-        if (dom.btnCurrBrl) dom.btnCurrBrl.classList.remove('active');
+    const isUSD = currency === 'USD';
+
+    if (dom.btnCurrUsd) {
+        dom.btnCurrUsd.classList.toggle('active', isUSD);
+        dom.btnCurrUsd.setAttribute('aria-pressed', isUSD ? 'true' : 'false');
+    }
+    if (dom.btnCurrBrl) {
+        dom.btnCurrBrl.classList.toggle('active', !isUSD);
+        dom.btnCurrBrl.setAttribute('aria-pressed', !isUSD ? 'true' : 'false');
+    }
+
+    if (isUSD) {
         if (dom.currencySymbol) dom.currencySymbol.textContent = '$';
         if (dom.labelPjRate) dom.labelPjRate.textContent = 'Valor da Proposta Mensal (em USD)';
         if (dom.intlFieldsGrid) dom.intlFieldsGrid.style.display = 'grid';
@@ -368,8 +391,6 @@ function setCurrency(currency) {
             dom.pjRate.step = '250';
         }
     } else {
-        if (dom.btnCurrBrl) dom.btnCurrBrl.classList.add('active');
-        if (dom.btnCurrUsd) dom.btnCurrUsd.classList.remove('active');
         if (dom.currencySymbol) dom.currencySymbol.textContent = 'R$';
         if (dom.labelPjRate) dom.labelPjRate.textContent = 'Valor da Nota Fiscal Mensal (em R$)';
         if (dom.intlFieldsGrid) dom.intlFieldsGrid.style.display = 'none';
@@ -381,28 +402,34 @@ function setCurrency(currency) {
     updateUI();
 }
 
-// Helper seguro para timeout do fetch
 function getTimeoutSignal(ms) {
     try {
-        if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+        if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) {
             return AbortSignal.timeout(ms);
         }
     } catch (e) {}
     return undefined;
 }
 
-// Integração com APIs Abertas do Governo
+// Integração Paralela com APIs Abertas do Governo
 async function fetchGovernmentData() {
     let ptaxLoaded = false;
     let minWageLoaded = false;
     let ipcaLoaded = false;
 
-    // 1. Cotação do Dólar PTAX (Banco Central do Brasil - SGS Série 1)
-    try {
-        const signal = getTimeoutSignal(4000);
-        const res = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados/ultimos/1?formato=json', signal ? { signal } : {});
-        if (res.ok) {
-            const data = await res.json();
+    const signal = getTimeoutSignal(4000);
+    const fetchOptions = signal ? { signal } : {};
+
+    const [ptaxRes, minWageRes, ipcaRes] = await Promise.allSettled([
+        fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados/ultimos/1?formato=json', fetchOptions),
+        fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1619/dados/ultimos/1?formato=json', fetchOptions),
+        fetch('https://brasilapi.com.br/api/taxas/v1', fetchOptions)
+    ]);
+
+    // 1. Dólar PTAX
+    if (ptaxRes.status === 'fulfilled' && ptaxRes.value.ok) {
+        try {
+            const data = await ptaxRes.value.json();
             if (Array.isArray(data) && data.length > 0 && data[0].valor) {
                 const parsedRate = parseFloat(data[0].valor);
                 if (!isNaN(parsedRate) && parsedRate > 0) {
@@ -414,17 +441,16 @@ async function fetchGovernmentData() {
                     ptaxLoaded = true;
                 }
             }
-        }
-    } catch (e) {
-        if (dom.tagPtax) dom.tagPtax.textContent = `Dólar PTAX (Ref): R$ ${appState.ptaxRate.toFixed(2)}`;
+        } catch (e) {}
+    }
+    if (!ptaxLoaded && dom.tagPtax) {
+        dom.tagPtax.textContent = `Dólar PTAX (Ref): R$ ${appState.ptaxRate.toFixed(2)}`;
     }
 
-    // 2. Salário Mínimo Nacional (Banco Central do Brasil - SGS Série 1619)
-    try {
-        const signal = getTimeoutSignal(4000);
-        const res = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1619/dados/ultimos/1?formato=json', signal ? { signal } : {});
-        if (res.ok) {
-            const data = await res.json();
+    // 2. Salário Mínimo
+    if (minWageRes.status === 'fulfilled' && minWageRes.value.ok) {
+        try {
+            const data = await minWageRes.value.json();
             if (Array.isArray(data) && data.length > 0 && data[0].valor) {
                 const parsedWage = parseFloat(data[0].valor);
                 if (!isNaN(parsedWage) && parsedWage > 0) {
@@ -433,17 +459,16 @@ async function fetchGovernmentData() {
                     minWageLoaded = true;
                 }
             }
-        }
-    } catch (e) {
-        if (dom.tagSalarioMinimo) dom.tagSalarioMinimo.textContent = `Salário Mínimo (Ref): R$ ${appState.minWage.toFixed(2)}`;
+        } catch (e) {}
+    }
+    if (!minWageLoaded && dom.tagSalarioMinimo) {
+        dom.tagSalarioMinimo.textContent = `Salário Mínimo (Ref): R$ ${appState.minWage.toFixed(2)}`;
     }
 
-    // 3. Indicadores de Inflação e Juros (BrasilAPI / BACEN)
-    try {
-        const signal = getTimeoutSignal(4000);
-        const res = await fetch('https://brasilapi.com.br/api/taxas/v1', signal ? { signal } : {});
-        if (res.ok) {
-            const data = await res.json();
+    // 3. IPCA
+    if (ipcaRes.status === 'fulfilled' && ipcaRes.value.ok) {
+        try {
+            const data = await ipcaRes.value.json();
             if (Array.isArray(data)) {
                 const ipcaObj = data.find(t => t.nome === 'IPCA');
                 if (ipcaObj && ipcaObj.valor) {
@@ -452,19 +477,20 @@ async function fetchGovernmentData() {
                     ipcaLoaded = true;
                 }
             }
-        }
-    } catch (e) {
-        if (dom.tagIpca) dom.tagIpca.textContent = `IPCA 12m: ${appState.ipcaRate}%`;
+        } catch (e) {}
+    }
+    if (!ipcaLoaded && dom.tagIpca) {
+        dom.tagIpca.textContent = `IPCA 12m: ${appState.ipcaRate}%`;
     }
 
-    // Atualiza status global de conectividade
+    // Atualiza status de conectividade
     if (dom.statusDot && dom.statusText) {
         if (ptaxLoaded || minWageLoaded || ipcaLoaded) {
             dom.statusDot.className = 'status-dot online';
             dom.statusText.textContent = 'Dados oficiais sincronizados em tempo real (BACEN / BrasilAPI)';
         } else {
             dom.statusDot.className = 'status-dot';
-            dom.statusText.textContent = 'Parâmetros econômicos oficiais carregados (modo offline/referência)';
+            dom.statusText.textContent = 'Parâmetros econômicos oficiais carregados (modo referência)';
         }
     }
 
@@ -479,32 +505,30 @@ function showToast(message) {
     dom.toastMsg.classList.add('show');
     if (toastTimer) clearTimeout(toastTimer);
     toastTimer = setTimeout(() => {
-        if (dom.toastMsg) dom.toastMsg.classList.remove('show');
+        dom.toastMsg.classList.remove('show');
     }, 3500);
 }
 
-// Cópia Segura para a Área de Transferência
+// Cópia Segura
 async function copyToClipboard(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-        try {
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
             await navigator.clipboard.writeText(text);
             return true;
-        } catch (e) {}
-    }
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
+        }
+    } catch (e) {}
+
     try {
-        const successful = document.execCommand('copy');
-        textArea.remove();
-        return successful;
-    } catch (err) {
-        textArea.remove();
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        const success = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return success;
+    } catch (e) {
         return false;
     }
 }
@@ -565,35 +589,36 @@ function syncStateFromURL() {
 }
 
 function updateURLParams() {
-    if (typeof window === 'undefined' || !window.history || !window.history.replaceState) return;
+    if (typeof window === 'undefined') return;
     try {
         const params = new URLSearchParams();
-        const clt = dom.cltSalary ? dom.cltSalary.value : '';
-        const ben = dom.cltBenefits ? dom.cltBenefits.value : '';
-        const pj = dom.pjRate ? dom.pjRate.value : '';
-        const curr = appState.selectedCurrency;
-        const rate = dom.pjExchangeRate ? dom.pjExchangeRate.value : '';
-        const spread = dom.pjSpread ? dom.pjSpread.value : '';
-        const exp = dom.pjExport ? (dom.pjExport.checked ? '1' : '0') : '1';
-        const fator = dom.pjFatorR ? (dom.pjFatorR.checked ? '1' : '0') : '1';
-
-        if (clt) params.set('clt', clt);
-        if (ben) params.set('ben', ben);
-        if (pj) params.set('pj', pj);
-        if (curr) params.set('curr', curr);
-        if (curr === 'USD') {
-            if (rate) params.set('rate', rate);
-            if (spread) params.set('spread', spread);
+        params.set('curr', appState.selectedCurrency);
+        if (dom.cltSalary) params.set('clt', dom.cltSalary.value);
+        if (dom.cltBenefits) params.set('ben', dom.cltBenefits.value);
+        if (dom.pjRate) params.set('pj', dom.pjRate.value);
+        if (dom.pjExchangeRate && appState.selectedCurrency === 'USD') {
+            params.set('rate', dom.pjExchangeRate.value);
         }
-        params.set('exp', exp);
-        params.set('fator', fator);
+        if (dom.pjSpread && appState.selectedCurrency === 'USD') {
+            params.set('spread', dom.pjSpread.value);
+        }
+        if (dom.pjExport) params.set('exp', dom.pjExport.checked ? '1' : '0');
+        if (dom.pjFatorR) params.set('fator', dom.pjFatorR.checked ? '1' : '0');
 
-        const newUrl = `${window.location.pathname}?${params.toString()}`;
-        window.history.replaceState(null, '', newUrl);
+        const newURL = `${window.location.pathname}?${params.toString()}`;
+        window.history.replaceState({}, '', newURL);
     } catch (e) {}
 }
 
-// Compartilhamento Viral
+let urlDebounceTimer = null;
+function debouncedUpdateURLParams() {
+    if (urlDebounceTimer) clearTimeout(urlDebounceTimer);
+    urlDebounceTimer = setTimeout(() => {
+        updateURLParams();
+    }, 350);
+}
+
+// Compartilhamento
 async function handleShareLink() {
     updateURLParams();
     const url = window.location.href;
@@ -601,7 +626,7 @@ async function handleShareLink() {
     if (copied) {
         showToast('Link da simulação copiado com sucesso.');
     } else {
-        showToast('Erro ao copiar link.');
+        showToast('Não foi possível copiar automaticamente. Selecione a URL na barra de navegação.');
     }
 }
 
@@ -632,30 +657,32 @@ async function handleCopySummary() {
     const breakEven = calculateBreakEven(cltRes.netAnnual, currency, exchangeRate, spreadVal, pjAcc, isExport, useFatorR, appState.minWage);
 
     const summaryText = [
-        '📊 Comparativo CLT vs PJ (Dev no Brasil e no Exterior):',
+        'Comparativo CLT vs PJ (Dev no Brasil e no Exterior):',
         `• CLT Bruto: ${formatBRL(cltVal)} (Líquido mensal: ${formatBRL(cltRes.netMonthly)} | Anual: ${formatBRL(cltRes.netAnnual)})`,
         `• PJ Faturamento: ${pjLabel} (Líquido mensal: ${formatBRL(pjRes.netMonthlyBRL)} | Anual: ${formatBRL(pjRes.netAnnualBRL)})`,
-        `🏆 Veredito: ${winner} com ${pct}% de vantagem (${diff >= 0 ? '+' : ''}${formatBRL(diff)}/ano).`,
-        `📌 Ponto de equilíbrio PJ: ${formatBRL(breakEven.breakEvenBRL)} / mês.`,
-        `🔗 Simulação completa: ${window.location.href}`
+        `Veredito: ${winner} com ${pct}% de vantagem (${diff >= 0 ? '+' : ''}${formatBRL(diff)}/ano).`,
+        `Ponto de equilíbrio PJ: ${formatBRL(breakEven.breakEvenBRL)} / mês.`,
+        `Simulação completa: ${window.location.href}`
     ].join('\n');
 
     const copied = await copyToClipboard(summaryText);
     if (copied) {
         showToast('Resumo copiado com sucesso.');
     } else {
-        showToast('Erro ao copiar resumo.');
+        showToast('Não foi possível copiar automaticamente. Selecione o texto diretamente na tela.');
     }
 }
 
-// Captura de Leads Integrada com a API Oficial (eu.robsoncassiano.software)
+// Captura de Leads
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+
 function initLeadForm() {
     if (!dom.leadForm) return;
 
     try {
         const registered = localStorage.getItem('calc_lead_registered');
         if (registered === 'true' && dom.btnLeadText) {
-            dom.btnLeadText.textContent = 'Relatório Solicitado ✓';
+            dom.btnLeadText.textContent = 'Material Solicitado ✓';
         }
     } catch (e) {}
 
@@ -672,17 +699,22 @@ function initLeadForm() {
         const name = nameInput.value.trim();
         const email = emailInput.value.trim().toLowerCase();
 
-        if (!email || !email.includes('@')) {
+        if (!EMAIL_REGEX.test(email)) {
             if (feedback) {
                 feedback.className = 'lead-feedback error';
-                feedback.textContent = 'Por favor, informe um e-mail válido.';
+                feedback.textContent = 'Informe um endereço de e-mail corporativo ou pessoal válido (exemplo: nome@empresa.com).';
                 feedback.style.display = 'block';
             }
+            emailInput.setAttribute('aria-invalid', 'true');
+            emailInput.setAttribute('aria-describedby', 'lead-feedback');
+            emailInput.focus();
             return;
+        } else {
+            emailInput.removeAttribute('aria-invalid');
         }
 
         try {
-            window.open('https://robsoncassiano.software/7-passos-simples-dev-na-gringa', '_blank');
+            window.open('https://robsoncassiano.software/7-passos-simples-dev-na-gringa', '_blank', 'noopener,noreferrer');
         } catch (err) {}
 
         if (btn) btn.disabled = true;
@@ -707,7 +739,7 @@ function initLeadForm() {
             if (response.ok && data.success) {
                 if (feedback) {
                     feedback.className = 'lead-feedback success';
-                    feedback.innerHTML = 'Relatório enviado com sucesso. O guia também foi aberto em uma nova aba (<a href="https://robsoncassiano.software/7-passos-simples-dev-na-gringa" target="_blank" rel="noopener noreferrer" style="color: #4ade80; text-decoration: underline;">clique aqui se a aba foi bloqueada</a>).';
+                    feedback.innerHTML = 'Material enviado com sucesso. O guia também foi aberto em nova guia (<a href="https://robsoncassiano.software/7-passos-simples-dev-na-gringa" target="_blank" rel="noopener noreferrer" style="color: #4ade80; text-decoration: underline;">clique aqui se a guia foi bloqueada</a>).';
                     feedback.style.display = 'block';
                 }
                 if (btnText) btnText.textContent = 'Enviado com Sucesso ✓';
@@ -715,29 +747,29 @@ function initLeadForm() {
                     localStorage.setItem('calc_lead_registered', 'true');
                 } catch (err) {}
                 dom.leadForm.reset();
-                showToast('Relatório solicitado. Verifique sua caixa de entrada.');
+                showToast('Material solicitado. Verifique sua caixa de entrada.');
             } else {
                 if (feedback) {
                     feedback.className = 'lead-feedback error';
-                    feedback.textContent = data.error || 'Não foi possível registrar seu e-mail no momento. Tente novamente.';
+                    feedback.textContent = data.error || 'O serviço de envio está temporariamente instável. Aguarde alguns instantes e tente novamente.';
                     feedback.style.display = 'block';
                 }
                 if (btn) btn.disabled = false;
-                if (btnText) btnText.textContent = 'Receber Relatório Gratuito →';
+                if (btnText) btnText.textContent = 'Baixar Parecer Fiscal e Minuta B2B →';
             }
         } catch (err) {
             if (feedback) {
                 feedback.className = 'lead-feedback error';
-                feedback.textContent = 'Falha de conexão. Verifique sua rede e tente novamente.';
+                feedback.textContent = 'Falha de comunicação com o servidor. Verifique sua conexão de rede e confirme o envio.';
                 feedback.style.display = 'block';
             }
             if (btn) btn.disabled = false;
-            if (btnText) btnText.textContent = 'Receber Relatório Gratuito →';
+            if (btnText) btnText.textContent = 'Baixar Parecer Fiscal e Minuta B2B →';
         }
     });
 }
 
-// Configuração dos Event Listeners
+// Configuração dos Event Listeners com Debounce
 function setupListeners() {
     if (dom.btnCurrBrl) dom.btnCurrBrl.addEventListener('click', () => setCurrency('BRL'));
     if (dom.btnCurrUsd) dom.btnCurrUsd.addEventListener('click', () => setCurrency('USD'));
@@ -765,9 +797,10 @@ function setupListeners() {
 
     triggerInputs.forEach(input => {
         if (input) {
-            input.addEventListener('input', updateUI);
-            input.addEventListener('change', updateUI);
-            input.addEventListener('keyup', updateUI);
+            input.addEventListener('input', () => {
+                updateUI();
+                debouncedUpdateURLParams();
+            });
         }
     });
 }
